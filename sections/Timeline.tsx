@@ -10,14 +10,13 @@ const Timeline = () => {
   const { addAlert } = useAlertStore();
 
   const handleSignOut = async () => {
-    try {
-      await supabaseClient.auth.signOut();
-    } catch (err) {
+    const { error } = await supabaseClient.auth.signOut();
+    if (error) {
       addAlert({
-        message: 'Error signing out',
+        message: error.message || 'Error signing out',
         type: 'error',
       });
-    } finally {
+    } else {
       addAlert({
         message: 'Signed out',
         type: 'success',
