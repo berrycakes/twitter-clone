@@ -6,6 +6,7 @@ import FormProvider from '../components/form/FormProvider';
 import Alert from '../components/ui-kit/Alert';
 import Button from '../components/ui-kit/Button';
 import { PATH } from '../routes/paths';
+import useAlertStore from '../store';
 
 type FormFields = {
   email: string;
@@ -25,7 +26,7 @@ const VALIDATIONS = {
 
 const AuthLogin = () => {
   const supabaseClient = useSupabaseClient();
-  const user = useUser();
+  const { addAlert } = useAlertStore();
   const methods = useForm<FormFields>({
     mode: 'onChange',
     defaultValues: {
@@ -39,11 +40,22 @@ const AuthLogin = () => {
   } = methods;
 
   const onSubmit = async (data: FormFields) => {
-    console.log(data);
-    await supabaseClient.auth.signInWithPassword({
+    const { data: res, error } = await supabaseClient.auth.signInWithPassword({
       email: data.email,
       password: data.password,
     });
+    if (error) {
+      addAlert({
+        message: error.message,
+        type: 'error',
+      });
+    }
+    if (res.user) {
+      addAlert({
+        message: 'Logged in',
+        type: 'success',
+      });
+    }
   };
 
   const onError = (error: any) => {
