@@ -25,12 +25,20 @@ const Timeline = () => {
     }
   };
 
+  const fetchProfiles = async () => {
+    const { data, error } = await supabaseClient.from('profiles').select();
+    console.log({ data });
+  };
+  //    null values only on profiles table
+  fetchProfiles();
+
   return (
     <div>
       <h1>Timeline here</h1>
       <p>email: {user?.email}</p>
       <p>display name : {user?.user_metadata?.display_name}</p>
       <p>username : {user?.user_metadata?.username}</p>
+      {/* working properly here */}
       <Button onClick={handleSignOut}>Sign out</Button>
     </div>
   );

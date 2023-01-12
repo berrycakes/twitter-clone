@@ -1,9 +1,8 @@
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import ControlledInputField from '../components/form/ControlledInputField';
 import FormProvider from '../components/form/FormProvider';
-import Alert from '../components/ui-kit/Alert';
 import Button from '../components/ui-kit/Button';
 import { PATH } from '../routes/paths';
 import useAlertStore from '../store';
@@ -39,6 +38,12 @@ const AuthLogin = () => {
     formState: { errors, isValid, isSubmitting },
   } = methods;
 
+  const checkEmails = async () => {
+    const { data, error } = await supabaseClient.from('profiles').select();
+    console.log({ data });
+  };
+  checkEmails();
+
   const onSubmit = async (data: FormFields) => {
     const { data: res, error } = await supabaseClient.auth.signInWithPassword({
       email: data.email,
@@ -58,8 +63,8 @@ const AuthLogin = () => {
     }
   };
 
-  const onError = (error: any) => {
-    console.log(error);
+  const onError = () => {
+    addAlert({ message: 'Form error', type: 'error' });
   };
 
   return (
