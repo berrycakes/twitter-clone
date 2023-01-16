@@ -4,10 +4,13 @@ import styles from './ButtonContainer.module.css';
 
 type ButtonContainerProps = {
   children: ReactNode;
+  marginTop?: boolean;
 };
 
-const ButtonContainer = ({ children }: ButtonContainerProps) => {
-  return <div className={clsx(styles.buttonContainer)}>{children}</div>;
+const ButtonContainer = ({ children, marginTop = true }: ButtonContainerProps) => {
+  return (
+    <div className={clsx(styles.buttonContainer, marginTop && styles.marginTop)}>{children}</div>
+  );
 };
 
 export default ButtonContainer;

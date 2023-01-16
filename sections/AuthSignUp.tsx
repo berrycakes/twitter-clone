@@ -33,6 +33,7 @@ const AuthSignUp = () => {
     },
   });
   const {
+    setError,
     handleSubmit,
     watch,
     formState: { errors, isValid, isSubmitting },
@@ -86,13 +87,19 @@ const AuthSignUp = () => {
       },
     });
     if (!!error) {
-      console.log('network', error);
+      if (error.message.includes('profiles_username_key')) {
+        setError('username', { type: 'custom', message: 'That username has already been taken.' });
+      }
+      addAlert({
+        message: error.message,
+        type: 'error',
+      });
     } else {
       addAlert({
         message: 'Account created. Confirm your email address.',
         type: 'success',
       });
-      router.push(PATH.login);
+      router.push(PATH.success);
     }
   };
 

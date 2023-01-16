@@ -16,3 +16,19 @@
   margin-bottom: 3rem;
 }
 
+.signUpSuccess {
+  max-width: 480px;
+  margin: 5.5rem 0;
+  display: grid;
+  grid-template-columns: 1;
+  place-items: center;
+  grid-gap: 4rem;
+}
+
+.signUpSuccess h4{
+  text-align: center;
+}
+.signUpSuccess p {
+  text-align: center;
+}
+
