@@ -1,17 +1,18 @@
-import { useFormContext, Controller } from 'react-hook-form'
-import InputField from '../ui-kit/InputField'
+import { useFormContext, Controller } from 'react-hook-form';
+import InputField from '../ui-kit/InputField';
 
 type ControlledInputFieldProps = {
-  name: string
-  label: string
-  placeholder: string
-  type: 'text' | 'number' | 'email' | 'password'
-  rules?: {}
-}
+  name: string;
+  label: string;
+  placeholder: string;
+  type: 'text' | 'number' | 'email' | 'password';
+  rules?: {};
+  helperText?: string;
+};
 
 const ControlledInputField = (props: ControlledInputFieldProps) => {
-  const { name, rules, label, placeholder, type } = props
-  const { control } = useFormContext()
+  const { name, rules, label, placeholder, type, helperText } = props;
+  const { control } = useFormContext();
 
   return (
     <Controller
@@ -26,10 +27,11 @@ const ControlledInputField = (props: ControlledInputFieldProps) => {
           label={label}
           placeholder={placeholder}
           type={type}
+          helperText={helperText}
         />
       )}
     />
-  )
-}
+  );
+};
 
-export default ControlledInputField
+export default ControlledInputField;
