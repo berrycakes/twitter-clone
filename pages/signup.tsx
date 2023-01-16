@@ -23,9 +23,7 @@ const SignUp = () => {
       <main className={styles.main}>
         <Card className={styles.signUp}>
           <h4>Create an account</h4>
-          <div>
-            <AuthSignUp />
-          </div>
+          <AuthSignUp />
         </Card>
       </main>
     </>

@@ -8,5 +8,11 @@
 
 .signUp {
   min-width: 480px;
+  margin: 5.5rem 0;
+}
+
+.signUp h4 {
+  text-align: center;
+  margin-bottom: 3rem;
 }
 

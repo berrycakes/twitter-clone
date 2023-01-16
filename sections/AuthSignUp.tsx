@@ -1,10 +1,11 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import ControlledInputField from '../components/form/ControlledInputField';
 import FormProvider from '../components/form/FormProvider';
 import Button from '../components/ui-kit/Button';
+import ButtonContainer from '../components/ui-kit/ButtonContainer';
+import Link from '../components/ui-kit/Link';
 import { hasLowerCase, hasSpecialChar, hasUpperCase } from '../helper/pattern';
 import { PATH } from '../routes/paths';
 import useAlertStore from '../store';
@@ -102,44 +103,50 @@ const AuthSignUp = () => {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit, onError)}>
       <ControlledInputField
-        name="email"
-        label="email"
-        placeholder="email"
-        type="text"
-        rules={VALIDATIONS.email}
-      />
-      <ControlledInputField
         name="displayName"
-        label="displayName"
-        placeholder="displayName"
+        label="Display Name"
+        placeholder="ex. Oreoyoyo"
+        helperText="This will be your unique public name on your profile."
         type="text"
         rules={VALIDATIONS.displayName}
       />
       <ControlledInputField
         name="username"
-        label="username"
-        placeholder="username"
+        label="Username"
+        placeholder="ex. juanititato"
+        helperText="This is your unique name that you will use to login with."
         type="text"
         rules={VALIDATIONS.username}
       />
       <ControlledInputField
-        name="password"
-        label="password"
-        placeholder="password"
+        name="email"
+        label="Email"
+        placeholder="email@email.com"
+        helperText="This is your email that you will use to login with."
         type="text"
+        rules={VALIDATIONS.email}
+      />
+      <ControlledInputField
+        name="password"
+        label="Password"
+        placeholder=""
+        helperText="Must contain at least a number and special symbol."
+        type="password"
         rules={VALIDATIONS.password}
       />
       <ControlledInputField
         name="confirmPassword"
-        label="confirm"
-        placeholder="confirm"
-        type="text"
+        label="Confirm Password"
+        placeholder=""
+        type="password"
         rules={VALIDATIONS.confirmPassword}
       />
-      <Button type="submit" disabled={isSubmitting || !isValid}>
-        submit
-      </Button>
-      <Link href={PATH.login}>Login instead</Link>
+      <ButtonContainer>
+        <Button type="submit" disabled={isSubmitting || !isValid}>
+          Create my account
+        </Button>
+        <Link href={PATH.login}>Back to Home</Link>
+      </ButtonContainer>
     </FormProvider>
   );
 };
