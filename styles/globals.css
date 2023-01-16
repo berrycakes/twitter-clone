@@ -1,12 +1,8 @@
 :root {
+  /* spacing */
   --max-width: 1100px;
   --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-
   --button-border-radius: 100px;
-
     /* colors */
   --accent-purple-10: #F8F7FC;
   --accent-purple-100: #DDD9F2;
@@ -80,6 +76,7 @@
   --white: #F2F2F2;
   --red: #D60025;
   --offwhite: #D9D9D9; 
+  --background: #F5F5F5
 }
 
 * {
@@ -90,12 +87,13 @@
 
 html *
 {
-   font-size: 16px !important;
+   font-size: 16px;
    font-family: Larsseit !important;
 }
 
 html,
 body {
+  background-color: var(--background);
   max-width: 100vw;
   overflow-x: hidden;
 }
@@ -105,11 +103,18 @@ a {
   text-decoration: none;
 }
 
+h4 {
+font-weight: 500;
+font-size: 31px;
+line-height: 37.2px;
+}
+
 @font-face {
   font-family: "Larsseit";
   src: url('../fonts/larsseit/Larsseit.otf');
   font-weight: normal;
   font-style: normal;
+  line-height: 160%;
 }
   
 @font-face {
