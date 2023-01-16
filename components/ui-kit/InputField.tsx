@@ -1,20 +1,25 @@
-import { FieldError } from 'react-hook-form'
-import styles from './InputField.module.css'
+import { FieldError } from 'react-hook-form';
+import styles from './InputField.module.css';
 
 type InputFieldProps = {
-  label: string
-  placeholder?: string
-  type: 'text' | 'number' | 'email' | 'password'
-  value: string
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  error?: FieldError
-}
+  label: string;
+  placeholder?: string;
+  type: 'text' | 'number' | 'email' | 'password';
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: FieldError;
+  helperText?: string;
+};
 
 const InputField = (props: InputFieldProps) => {
-  const { value, label, placeholder, type, onChange, error } = props
+  const { value, label, placeholder, type, onChange, error, helperText } = props;
   return (
     <div className={styles.root}>
-      {label ? <label htmlFor="input-field">{label}</label> : null}
+      {label ? (
+        <label htmlFor="input-field" className={styles.label}>
+          {label}
+        </label>
+      ) : null}
       <input
         type={type}
         value={value}
@@ -22,9 +27,11 @@ const InputField = (props: InputFieldProps) => {
         onChange={onChange}
         className={styles.input}
       />
+      {!!helperText ? <span className={styles.helperText}>{helperText}</span> : null}
+
       {!!error ? <span className={styles.error}>{error.message}</span> : null}
     </div>
-  )
-}
+  );
+};
 
-export default InputField
+export default InputField;
