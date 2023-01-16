@@ -1,9 +1,10 @@
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import ControlledInputField from '../components/form/ControlledInputField';
 import FormProvider from '../components/form/FormProvider';
 import Button from '../components/ui-kit/Button';
+import ButtonContainer from '../components/ui-kit/ButtonContainer';
+import Link from '../components/ui-kit/Link';
 import { PATH } from '../routes/paths';
 import useAlertStore from '../store';
 
@@ -71,22 +72,32 @@ const AuthLogin = () => {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit, onError)}>
       <ControlledInputField
         name="email"
-        label="email"
+        label="Email"
         placeholder="email"
         type="text"
         rules={VALIDATIONS.email}
       />
       <ControlledInputField
         name="password"
-        label="password"
+        label="Password"
         placeholder="password"
         type="password"
         rules={VALIDATIONS.password}
       />
-      <Button type="submit" disabled={isSubmitting || !isValid}>
-        submit
-      </Button>
-      <Link href={PATH.signup}>Create an account</Link>
+      <ButtonContainer>
+        <Button type="submit" disabled={isSubmitting || !isValid}>
+          Next
+        </Button>
+        <Link href={'/'}>Forgot Password</Link>
+      </ButtonContainer>
+      <ButtonContainer>
+        <p>
+          Don't have an account?{' '}
+          <Link href={PATH.signup} variant="accent">
+            Sign Up here
+          </Link>
+        </p>
+      </ButtonContainer>
     </FormProvider>
   );
 };

@@ -1,6 +1,7 @@
 import { useUser } from '@supabase/auth-helpers-react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Card from '../components/ui-kit/Card';
 import { PATH } from '../routes/paths';
 import AuthLogin from '../sections/AuthLogin';
 import styles from '../styles/Home.module.css';
@@ -19,10 +20,10 @@ const Login = () => {
         <title>Login| Twitter Clone</title>
       </Head>
       <main className={styles.main}>
-        <h1>Login</h1>
-        <div>
+        <Card className={styles.signUp}>
+          <h4>Login</h4>
           <AuthLogin />
-        </div>
+        </Card>
       </main>
     </>
   );
