@@ -24,7 +24,7 @@ const InputAdornment = ({ type, isVisible, handleToggle }: InputAdornmentProps) 
   if (type !== 'password') return null;
   return (
     <div className={styles.inputAdornment} onClick={handleToggle}>
-      {isVisible ? <MdVisibilityOff size={22} /> : <MdVisibility size={22} />}
+      {isVisible ? <MdVisibility size={22} /> : <MdVisibilityOff size={22} />}
     </div>
   );
 };
