@@ -36,6 +36,7 @@ const AuthLogin = () => {
   });
   const {
     handleSubmit,
+    setError,
     formState: { errors, isValid, isSubmitting },
   } = methods;
 
@@ -51,6 +52,8 @@ const AuthLogin = () => {
       password: data.password,
     });
     if (error) {
+      setError('email', { type: 'custom', message: 'The email entered is incorrect.' });
+      setError('password', { type: 'custom', message: 'The password entered is incorrect.' });
       addAlert({
         message: error.message,
         type: 'error',
