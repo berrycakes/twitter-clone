@@ -1,0 +1,13 @@
+.container {
+  min-width: 588px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  place-items: flex-start center;
+  grid-row-gap: 1.5rem;
+}
+
+.container h6 {
+  width: 100%;
+  text-align: left;
+}

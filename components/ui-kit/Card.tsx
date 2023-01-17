@@ -5,11 +5,12 @@ import styles from './Card.module.css';
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   className?: string;
+  padding?: string | number;
 }
 
-const Card = ({ children, className, ...other }: CardProps) => {
+const Card = ({ children, className, padding = '4rem 1rem', ...other }: CardProps) => {
   return (
-    <div className={clsx(styles.card, className)} {...other}>
+    <div style={{ padding: padding }} className={clsx(styles.card, className)} {...other}>
       {children}
     </div>
   );

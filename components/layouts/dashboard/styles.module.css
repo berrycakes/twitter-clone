@@ -1,0 +1,11 @@
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-top: 1.5rem;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 588px 1fr;
+  grid-template-rows: 1fr;
+  place-items: flex-start center;
+  grid-column-gap: 1.5rem;
+}

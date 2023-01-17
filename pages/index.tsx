@@ -2,7 +2,7 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { PATH } from '../routes/paths';
-import Timeline from '../sections/Timeline';
+import Dashboard from '../sections/Dashboard';
 import styles from '../styles/Home.module.css';
 
 const Home = () => {
@@ -15,7 +15,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <Timeline />
+        <Dashboard />
       </main>
     </>
   );

@@ -1,0 +1,35 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  place-items: center;
+  grid-row-gap: 1.5rem;
+  padding: 5rem;
+}
+
+.iconContainer {
+  display: grid;
+  place-items: flex-start;
+  margin: 0 0.5rem;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  color: var(--neutral-gray-200) !important;
+}
+
+.selected {
+  color: var(--primary-mint-base) !important;
+}
+
+.welcome {
+  color: var(--neutral-gray-200);
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  column-gap: 0.25rem;
+}

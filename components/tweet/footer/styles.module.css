@@ -1,0 +1,30 @@
+.container {
+  width: 100%;
+  height: 24px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: 1fr;
+  place-items: center;
+  grid-column-gap: 0.5rem;
+}
+
+.iconContainer {
+  display: grid;
+  place-items: center;
+  margin: 0 0.25rem;
+  color: var(--primary-blue-base);
+}
+
+.stats {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.stats p {
+  line-height: 100%;
+  color: var(--accent-purple-base);
+  font-weight: bold;
+}
