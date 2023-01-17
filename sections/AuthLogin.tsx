@@ -52,8 +52,8 @@ const AuthLogin = () => {
       password: data.password,
     });
     if (error) {
-      setError('email', { type: 'custom', message: 'The email entered is incorrect.' });
-      setError('password', { type: 'custom', message: 'The password entered is incorrect.' });
+      setError('email', { type: 'custom', message: error.message });
+      setError('password', { type: 'custom', message: error.message });
       addAlert({
         message: error.message,
         type: 'error',
@@ -61,7 +61,7 @@ const AuthLogin = () => {
     }
     if (res.user) {
       addAlert({
-        message: 'Logged in',
+        message: `Logged in as ${res.user.user_metadata.display_name}`,
         type: 'success',
       });
     }

@@ -77,12 +77,12 @@ const AuthSignUp = () => {
 
   const onSubmit = async (data: FormFields) => {
     const { data: response, error } = await supabaseClient.auth.signUp({
-      email: data.email,
-      password: data.password,
+      email: data.email.trim(),
+      password: data.password.trim(),
       options: {
         data: {
-          username: data.username,
-          display_name: data.displayName,
+          username: data.username.trim(),
+          display_name: data.displayName.trim(),
         },
       },
     });
