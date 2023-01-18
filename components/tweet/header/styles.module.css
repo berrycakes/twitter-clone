@@ -45,6 +45,10 @@
 
 .dateContainer {
   grid-area: 2 / 2 / 3 / 12;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 0.25rem;
   font-size: 13px;
   line-height: 100%;
   color: var(--neutral-gray-400);

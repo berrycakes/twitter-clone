@@ -41,6 +41,20 @@
 
 .nameContainer {
   grid-area: 1 / 2 / 2 / 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.nameContainer p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.username {
+  font-size: 13px;
+  line-height: 100%;
+  color: var(--neutral-gray-400);
 }
 
 .dateContainer {
