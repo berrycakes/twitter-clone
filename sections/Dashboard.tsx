@@ -1,5 +1,5 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { useQuery } from '@tanstack/react-query';
+import { QueryCache, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import DashboardLayout from '../components/layouts/dashboard';
 import NavigationLayout from '../components/layouts/navigation';
@@ -30,17 +30,26 @@ const Timeline = () => {
     return data;
   };
 
-  const { data: tweets } = useQuery({ queryKey: ['tweets'], queryFn: getTweets });
-  const { data: profiles } = useQuery({ queryKey: ['profiles'], queryFn: getProfiles });
+  const { data: tweets } = useQuery({
+    queryKey: ['tweets'],
+    queryFn: getTweets,
+  });
+  const { data: profiles } = useQuery({
+    queryKey: ['profiles'],
+    queryFn: getProfiles,
+  });
 
   const handleSignOut = async () => {
     const { error } = await supabaseClient.auth.signOut();
+
     if (error) {
       addAlert({
         message: error.message || 'Error signing out',
         type: 'error',
       });
     } else {
+      const queryCache = new QueryCache();
+      queryCache.clear();
       addAlert({
         message: 'Signed out',
         type: 'success',
@@ -59,10 +68,14 @@ const Timeline = () => {
       <TimelineLayout>
         <CreateTweet />
         {tweets.map((tweet) => {
-          const profile = profiles.find((profile) => tweet.user_id === profile.id);
+          const profile = profiles.find(
+            (profile) => tweet.user_id === profile.id
+          );
           return (
             <Tweet
-              username={profile.display_name || 'unknown user'}
+              key={tweet.id}
+              username={profile.username || 'unknown user'}
+              displayName={profile.display_name || ''}
               content={tweet.content}
               date={tweet.created_at}
             />
@@ -71,8 +84,15 @@ const Timeline = () => {
       </TimelineLayout>
       <SidebarLayout>
         {profiles.map((profile) => {
-          if (!profile.display_name) return null;
-          return <People name={profile.display_name} />;
+          if (!profile.display_name || !profile.username) return null;
+          if (profile.username === user?.user_metadata?.username) return null;
+          return (
+            <People
+              key={profile.id}
+              name={profile.display_name}
+              username={profile.username}
+            />
+          );
         })}
       </SidebarLayout>
     </DashboardLayout>
