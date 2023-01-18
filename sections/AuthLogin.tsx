@@ -40,12 +40,6 @@ const AuthLogin = () => {
     formState: { errors, isValid, isSubmitting },
   } = methods;
 
-  const checkEmails = async () => {
-    const { data, error } = await supabaseClient.from('profiles').select();
-    console.log({ data });
-  };
-  checkEmails();
-
   const onSubmit = async (data: FormFields) => {
     const { data: res, error } = await supabaseClient.auth.signInWithPassword({
       email: data.email,
