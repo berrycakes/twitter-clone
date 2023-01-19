@@ -1,7 +1,6 @@
 import clsx from 'clsx';
-import { MouseEventHandler, useState } from 'react';
 import { FieldError } from 'react-hook-form';
-import { MdStars, MdVisibility, MdVisibilityOff } from 'react-icons/md';
+import { MdStars } from 'react-icons/md';
 import styles from './TextArea.module.css';
 
 type TextAreaProps = {
@@ -40,7 +39,10 @@ const TextArea = (props: TextAreaProps) => {
   return (
     <div className={styles.root}>
       {label ? (
-        <label htmlFor="input-field" className={clsx(styles.label, error && styles.error)}>
+        <label
+          htmlFor="input-field"
+          className={clsx(styles.label, error && styles.error)}
+        >
           {label}
         </label>
       ) : null}
@@ -55,7 +57,9 @@ const TextArea = (props: TextAreaProps) => {
         <Footer type={type} charCount={value.length || 0} />
       </div>
       {!!error ? (
-        <span className={clsx(styles.helperText, error && styles.error)}>{error.message}</span>
+        <span className={clsx(styles.helperText, error && styles.error)}>
+          {error.message}
+        </span>
       ) : null}
     </div>
   );
