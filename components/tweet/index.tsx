@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import { useState } from 'react';
-import { MdDelete, MdEdit, MdPersonAddAlt1 } from 'react-icons/md';
+import { MdDelete, MdEdit, MdMoreHoriz, MdPersonAddAlt1 } from 'react-icons/md';
 import CreateTweet from '../../sections/CreateTweet';
 import EditTweet from '../../sections/EditTweet';
 import useAlertStore from '../../store';
@@ -129,6 +129,9 @@ const Tweet = (props: TweetProps) => {
         isEdited={isEdited}
         createMode={false}
         dropdownItems={user_id === user?.id ? selfMenuItems : otherMenuItems}
+        dropdownIcon={
+          user_id === user?.id ? <MdMoreHoriz /> : <MdPersonAddAlt1 />
+        }
       />
       {editMode ? (
         <EditTweet tweet={tweet} toggleEditMode={toggleEditMode} />
