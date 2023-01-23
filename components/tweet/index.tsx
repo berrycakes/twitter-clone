@@ -1,6 +1,10 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
+import { useState } from 'react';
+import { MdDelete, MdEdit } from 'react-icons/md';
+import CreateTweet from '../../sections/CreateTweet';
+import EditTweet from '../../sections/EditTweet';
 import Card from '../ui-kit/Card';
 import Footer from './footer';
 import Header from './header';
@@ -24,21 +28,53 @@ dayjs.updateLocale('en', {
   },
 });
 
-type TweetProps = {
+export type Tweet = {
+  id: number;
+  user_id: string;
   content: string;
+  created_at: string | Date;
+  parent_id?: number;
+};
+
+type TweetProps = {
   username: string;
   displayName: string;
-  date: Date;
+  tweet: Tweet;
 };
 
 const Tweet = (props: TweetProps) => {
-  const { username, displayName, content, date } = props;
+  const { username, displayName, tweet } = props;
+  const [editMode, setEditMode] = useState(false);
+  const { created_at: date, content, id } = tweet;
   const displayDate =
     dayjs(new Date()).diff(date, 'hours') < 23
       ? dayjs(date).fromNow(true)
       : dayjs(date).year() === dayjs().year()
       ? dayjs(date).format('MMM DD')
       : dayjs(date).format('MMM DD YY');
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
+  const dropdownItems = [
+    {
+      label: 'Edit',
+      icon: <MdEdit />,
+      onClick: () => {
+        toggleEditMode();
+      },
+    },
+    {
+      label: 'Delete',
+      icon: <MdDelete />,
+      onClick: () => {
+        alert('I am delete');
+      },
+      customHover: true,
+    },
+  ];
+
   return (
     <Card className={styles.container} padding="1.5rem">
       <Header
@@ -46,8 +82,13 @@ const Tweet = (props: TweetProps) => {
         displayName={displayName}
         date={displayDate}
         createMode={false}
+        dropdownItems={dropdownItems}
       />
-      <div className={styles.content}>{content}</div>
+      {editMode ? (
+        <EditTweet tweet={tweet} toggleEditMode={toggleEditMode} />
+      ) : (
+        <div className={styles.content}>{content}</div>
+      )}
       <Footer />
     </Card>
   );

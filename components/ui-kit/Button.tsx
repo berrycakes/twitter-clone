@@ -4,12 +4,18 @@ import styles from './Button.module.css';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'error';
   fullWidth?: boolean;
 }
 
-const Button = ({ children, variant, disabled, fullWidth = true, ...other }: ButtonProps) => {
-  const variantStyle = variant === 'secondary' ? styles.secondary : styles.primary;
+const Button = ({
+  children,
+  variant,
+  disabled,
+  fullWidth = true,
+  ...other
+}: ButtonProps) => {
+  const variantStyle = variant ? styles[variant] : styles.primary;
   return (
     <button
       className={clsx(

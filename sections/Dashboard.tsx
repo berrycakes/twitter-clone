@@ -76,8 +76,7 @@ const Timeline = () => {
               key={tweet.id}
               username={profile.username || 'unknown user'}
               displayName={profile.display_name || ''}
-              content={tweet.content}
-              date={tweet.created_at}
+              tweet={tweet}
             />
           );
         })}

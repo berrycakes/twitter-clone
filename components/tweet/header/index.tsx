@@ -1,5 +1,6 @@
 import Image from 'next/image';
-import { MdExpandMore, MdMoreHoriz } from 'react-icons/md';
+import { MdDelete, MdEdit, MdExpandMore, MdMoreHoriz } from 'react-icons/md';
+import Dropdown, { DropdownItem } from '../../dropdown';
 import IconButton from '../../ui-kit/IconButton';
 import styles from './styles.module.css';
 
@@ -8,6 +9,7 @@ type HeaderProps = {
   displayName: string;
   date?: string;
   createMode: boolean;
+  dropdownItems?: DropdownItem[];
 };
 
 const Header = ({
@@ -15,6 +17,7 @@ const Header = ({
   date,
   displayName,
   createMode = false,
+  dropdownItems,
 }: HeaderProps) => {
   return (
     <div className={styles.container}>
@@ -37,7 +40,7 @@ const Header = ({
             <div>{date}</div>
           </div>
           <div className={styles.menuContainer}>
-            <IconButton icon={<MdMoreHoriz size={20} />} />
+            <Dropdown items={dropdownItems} icon={<MdMoreHoriz />} />
           </div>
         </>
       )}
