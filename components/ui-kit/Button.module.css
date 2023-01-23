@@ -28,6 +28,10 @@
   background-color: var(--error-200);
 }
 
+.muted {
+  background-color: var(--neutral-gray-200);
+}
+
 .disabled {
   opacity: 0.4;
 }
