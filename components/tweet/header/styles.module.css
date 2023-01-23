@@ -55,3 +55,8 @@
   line-height: 100%;
   color: var(--neutral-gray-400);
 }
+
+.edited {
+  color: var(--neutral-gray-200);
+  font-style: italic;
+}

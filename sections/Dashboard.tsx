@@ -21,7 +21,7 @@ const Timeline = () => {
     const { data, error } = await supabaseClient
       .from('tweets')
       .select()
-      .order('created_at', { ascending: false });
+      .order('updated_at', { ascending: false });
     return data;
   };
 

@@ -8,6 +8,7 @@ type HeaderProps = {
   name?: string;
   displayName: string;
   date?: string;
+  isEdited?: boolean;
   createMode: boolean;
   dropdownItems?: DropdownItem[];
 };
@@ -18,6 +19,7 @@ const Header = ({
   displayName,
   createMode = false,
   dropdownItems,
+  isEdited,
 }: HeaderProps) => {
   return (
     <div className={styles.container}>
@@ -38,6 +40,7 @@ const Header = ({
             <div>{name}</div>
             <p>•</p>
             <div>{date}</div>
+            {isEdited ? <div className={styles.edited}>edited</div> : null}
           </div>
           <div className={styles.menuContainer}>
             <Dropdown items={dropdownItems} icon={<MdMoreHoriz />} />

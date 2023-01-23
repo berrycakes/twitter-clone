@@ -52,7 +52,6 @@ const DropdownItem = ({
 const Dropdown = ({ icon, items }: DropdownProps) => {
   const [open, setOpen] = useState(false);
   const toggleDropdown = () => {
-    console.log('toggle');
     setOpen(!open);
   };
   const handleClickOutside = () => {

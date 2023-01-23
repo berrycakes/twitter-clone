@@ -1,7 +1,8 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { useQueryClient } from '@tanstack/react-query';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { useOnClickOutside } from 'usehooks-ts';
 import ControlledTextArea from '../components/form/ControlledTextArea';
 import FormProvider from '../components/form/FormProvider';
 import { Tweet } from '../components/tweet';
@@ -42,6 +43,7 @@ const EditTweet = ({ tweet, toggleEditMode }: EditTweetProps) => {
   const onSubmit = async (data: FormFields) => {
     const payload = {
       content: data.content,
+      updated_at: new Date(),
     };
     const { error } = await supabaseClient
       .from('tweets')
@@ -59,30 +61,35 @@ const EditTweet = ({ tweet, toggleEditMode }: EditTweetProps) => {
     }
   };
 
+  const ref = useRef(null);
+  useOnClickOutside(ref, toggleEditMode);
+
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <ControlledTextArea
-        type="create"
-        name="content"
-        defaultValue={tweet.content}
-        rules={{
-          required: { value: true, message: 'Content is required' },
-          maxLength: { value: 225, message: 'Exceeded maximum length' },
-        }}
-      />
-      <Stack row gap={16} padding={16}>
-        <Button
-          type="submit"
-          disabled={
-            !isValid || watch('content') === tweet.content || isSubmitting
-          }
-        >
-          Submit
-        </Button>
-        <Button type="button" variant="error" onClick={toggleEditMode}>
-          Cancel
-        </Button>
-      </Stack>
+      <div ref={ref}>
+        <ControlledTextArea
+          type="create"
+          name="content"
+          defaultValue={tweet.content}
+          rules={{
+            required: { value: true, message: 'Content is required' },
+            maxLength: { value: 225, message: 'Exceeded maximum length' },
+          }}
+        />
+        <Stack row gap={16} padding={16}>
+          <Button
+            type="submit"
+            disabled={
+              !isValid || watch('content') === tweet.content || isSubmitting
+            }
+          >
+            Submit
+          </Button>
+          <Button type="button" variant="error" onClick={toggleEditMode}>
+            Cancel
+          </Button>
+        </Stack>
+      </div>
     </FormProvider>
   );
 };
