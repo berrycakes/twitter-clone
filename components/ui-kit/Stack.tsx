@@ -3,10 +3,11 @@ import { HTMLAttributes, ReactNode } from 'react';
 import styles from './Stack.module.css';
 
 interface StackProps extends HTMLAttributes<HTMLDivElement> {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   row?: boolean;
   column?: boolean;
+  divider?: boolean;
   padding?: number | string;
   margin?: number | string;
   align?: string;
@@ -17,6 +18,7 @@ interface StackProps extends HTMLAttributes<HTMLDivElement> {
 const Stack = ({
   row,
   column,
+  divider,
   padding,
   margin,
   align,
@@ -40,7 +42,8 @@ const Stack = ({
         styles.stack,
         className,
         row && styles.row,
-        column && styles.column
+        column && styles.column,
+        divider && styles.divider
       )}
       {...other}
     >

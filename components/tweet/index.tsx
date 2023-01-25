@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { MdDelete, MdEdit, MdMoreHoriz, MdPersonAddAlt1 } from 'react-icons/md';
 import CreateTweet from '../../sections/CreateTweet';
 import EditTweet from '../../sections/EditTweet';
+import ReplyTweet from '../../sections/ReplyTweet';
 import useAlertStore from '../../store';
 import Card from '../ui-kit/Card';
 import Modal from '../ui-kit/Modal';
@@ -54,6 +55,7 @@ const Tweet = (props: TweetProps) => {
   const supabaseClient = useSupabaseClient();
   const [editMode, setEditMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
+  const [replyMode, setReplyMode] = useState(false);
 
   const { username, displayName, tweet } = props;
   const { created_at, updated_at, content, id, user_id } = tweet;
@@ -70,6 +72,9 @@ const Tweet = (props: TweetProps) => {
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
+  };
+  const toggleReplyMode = () => {
+    setReplyMode(!replyMode);
   };
 
   const toggleDeleteMode = () => {
@@ -138,6 +143,10 @@ const Tweet = (props: TweetProps) => {
       ) : (
         <div className={styles.content}>{content}</div>
       )}
+      <Footer handleReply={toggleReplyMode} replyStats={0} />
+      {replyMode ? (
+        <ReplyTweet tweet={tweet} toggleReplyMode={toggleReplyMode} />
+      ) : null}
 
       <Modal
         actionLabel="Delete"
@@ -147,8 +156,6 @@ const Tweet = (props: TweetProps) => {
         isOpen={deleteMode}
         setIsOpen={setDeleteMode}
       />
-
-      <Footer />
     </Card>
   );
 };
