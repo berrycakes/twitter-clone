@@ -6,15 +6,14 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { MdDelete, MdEdit, MdMoreHoriz, MdPersonAddAlt1 } from 'react-icons/md';
-import { PATH } from '../../routes/paths';
-import CreateTweet from '../../sections/CreateTweet';
-import EditTweet from '../../sections/EditTweet';
-import ReplyTweet from '../../sections/ReplyTweet';
-import useAlertStore from '../../store';
-import Card from '../ui-kit/Card';
-import Modal from '../ui-kit/Modal';
-import Footer from './footer';
-import Header from './header';
+import EditTweet from '../../../sections/EditTweet';
+import ReplyTweet from '../../../sections/ReplyTweet';
+import useAlertStore from '../../../store';
+import Card from '../../ui-kit/Card';
+import Modal from '../../ui-kit/Modal';
+import Stack from '../../ui-kit/Stack';
+import Footer from '.././footer';
+import Header from '.././header';
 import styles from './styles.module.css';
 
 dayjs.extend(relativeTime);
@@ -51,18 +50,15 @@ type TweetProps = {
   replies?: Tweet[];
 };
 
-const Tweet = (props: TweetProps) => {
-  const { pathname } = useRouter();
-  const isTweetView = pathname === PATH.tweet;
-
+const Reply = (props: TweetProps) => {
+  const router = useRouter();
   const user = useUser();
   const qc = useQueryClient();
   const { addAlert } = useAlertStore();
   const supabaseClient = useSupabaseClient();
-  const router = useRouter();
   const [editMode, setEditMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
-  const [replyMode, setReplyMode] = useState(isTweetView);
+  const [replyMode, setReplyMode] = useState(false);
 
   const { username, displayName, tweet, replies } = props;
   const { created_at, updated_at, content, id, user_id, parent_id } = tweet;
@@ -144,45 +140,48 @@ const Tweet = (props: TweetProps) => {
   ];
 
   return (
-    <Card className={styles.container} padding="1.5rem">
-      <Header
-        name={username}
-        displayName={displayName}
-        date={displayDate()}
-        isEdited={isEdited}
-        createMode={false}
-        dropdownItems={user_id === user?.id ? selfMenuItems : otherMenuItems}
-        dropdownIcon={
-          user_id === user?.id ? <MdMoreHoriz /> : <MdPersonAddAlt1 />
-        }
-      />
-      {editMode ? (
-        <EditTweet tweet={tweet} toggleEditMode={toggleEditMode} />
-      ) : (
-        <div className={styles.content}>{content}</div>
-      )}
-      <Footer handleReply={handleReply} replyStats={replies?.length || 0} />
-      {replyMode ? (
-        <ReplyTweet
-          tweet={tweet}
-          toggleReplyMode={toggleReplyMode}
-          replies={replies}
-        />
-      ) : null}
+    <>
+      <Stack divider margin="1rem 0" />
 
-      <Modal
-        actionLabel="Delete"
-        header="Confirm"
-        content="Are you sure you want to delete this tweet?"
-        action={handleDelete}
-        isOpen={deleteMode}
-        setIsOpen={setDeleteMode}
-      />
-    </Card>
+      <Card className={styles.container} padding="1rem">
+        <Header
+          name={username}
+          displayName={displayName}
+          date={displayDate()}
+          isEdited={isEdited}
+          createMode={false}
+          dropdownItems={user_id === user?.id ? selfMenuItems : otherMenuItems}
+          dropdownIcon={
+            user_id === user?.id ? <MdMoreHoriz /> : <MdPersonAddAlt1 />
+          }
+        />
+        {editMode ? (
+          <EditTweet tweet={tweet} toggleEditMode={toggleEditMode} />
+        ) : (
+          <div className={styles.content}>{content}</div>
+        )}
+        <Footer handleReply={handleReply} replyStats={replies?.length || 0} />
+        {replyMode ? (
+          <ReplyTweet
+            tweet={tweet}
+            toggleReplyMode={toggleReplyMode}
+            replies={replies}
+          />
+        ) : null}
+        <Modal
+          actionLabel="Delete"
+          header="Confirm"
+          content="Are you sure you want to delete this tweet?"
+          action={handleDelete}
+          isOpen={deleteMode}
+          setIsOpen={setDeleteMode}
+        />
+      </Card>
+    </>
   );
 };
 
-export default Tweet;
+export default Reply;
 
 // Tweets
 // -id: int

@@ -11,7 +11,7 @@ import Button from '../components/ui-kit/Button';
 import useAlertStore from '../store';
 import CreateTweet from './CreateTweet';
 
-const Timeline = () => {
+const TweetView = (props: { id: number }) => {
   const supabaseClient = useSupabaseClient();
   const user = useUser();
   const router = useRouter();
@@ -23,6 +23,14 @@ const Timeline = () => {
       .select()
       .order('updated_at', { ascending: false });
     return data;
+  };
+
+  const getSpecificTweet = async () => {
+    const { data, error } = await supabaseClient
+      .from('tweets')
+      .select()
+      .eq('id', props.id);
+    return data?.[0];
   };
 
   const getProfiles = async () => {
@@ -37,6 +45,10 @@ const Timeline = () => {
   const { data: profiles } = useQuery({
     queryKey: ['profiles'],
     queryFn: getProfiles,
+  });
+  const { data: specificTweet } = useQuery({
+    queryKey: ['specific'],
+    queryFn: getSpecificTweet,
   });
 
   const handleSignOut = async () => {
@@ -59,31 +71,32 @@ const Timeline = () => {
   };
 
   if (!profiles || !tweets) return null;
+  if (specificTweet?.parent_id) return null;
+
+  const renderTweet = () => {
+    const profile = profiles.find(
+      (profile) => specificTweet?.user_id === profile.id
+    );
+    const replies = tweets.filter(
+      (item) => specificTweet?.id === item.parent_id
+    );
+    if (!profile) return null;
+    return (
+      <Tweet
+        username={profile.username || 'unknown user'}
+        displayName={profile.display_name || ''}
+        tweet={specificTweet}
+        replies={replies}
+      />
+    );
+  };
 
   return (
     <DashboardLayout>
       <NavigationLayout user={user}>
         <Button onClick={handleSignOut}>Sign out</Button>
       </NavigationLayout>
-      <TimelineLayout>
-        <CreateTweet />
-        {tweets.map((tweet) => {
-          const profile = profiles.find(
-            (profile) => tweet.user_id === profile.id
-          );
-          const replies = tweets.filter((item) => tweet.id === item.parent_id);
-          if (tweet.parent_id) return null;
-          return (
-            <Tweet
-              key={tweet.id}
-              username={profile.username || 'unknown user'}
-              displayName={profile.display_name || ''}
-              tweet={tweet}
-              replies={replies}
-            />
-          );
-        })}
-      </TimelineLayout>
+      <TimelineLayout>{renderTweet()}</TimelineLayout>
       <SidebarLayout>
         {profiles.map((profile) => {
           if (!profile.display_name || !profile.username) return null;
@@ -101,4 +114,4 @@ const Timeline = () => {
   );
 };
 
-export default Timeline;
+export default TweetView;

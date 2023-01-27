@@ -12,7 +12,7 @@ const Button = ({
   children,
   variant,
   disabled,
-  fullWidth = true,
+  fullWidth,
   ...other
 }: ButtonProps) => {
   const variantStyle = variant ? styles[variant] : styles.primary;
@@ -21,7 +21,7 @@ const Button = ({
       className={clsx(
         variantStyle,
         disabled && styles.disabled,
-        fullWidth && styles.fullWidth,
+        fullWidth ? styles.fullWidth : styles.normalWidth,
         styles.button
       )}
       {...other}

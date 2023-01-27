@@ -39,3 +39,7 @@
 .fullWidth {
   width: 100%;
 }
+
+.normalWidth {
+  width: 200px;
+}

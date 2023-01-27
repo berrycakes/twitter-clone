@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { MdChevronRight } from 'react-icons/md';
 import { getKeyByValue, startCase } from '../../helper/functions';
@@ -10,7 +11,9 @@ const Breadcrumbs = () => {
 
   return (
     <div className={styles.container}>
-      <p className={styles.rootPath}>Home</p>
+      <Link href="/">
+        <p className={styles.rootPath}>Home</p>
+      </Link>
       <div className={styles.iconContainer}>
         <MdChevronRight size={20} />
       </div>
