@@ -1,15 +1,15 @@
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { PATH } from '../../routes/paths';
-import Dashboard from '../../sections/Dashboard';
 import TweetView from '../../sections/TweetView';
 import styles from '../../styles/Home.module.css';
-import { useRouter } from 'next/router';
 
 const Tweet = () => {
   const router = useRouter();
   const { id } = router.query;
+
   const newId = parseInt(id as string);
   if (typeof newId !== 'number') return null;
   return (
@@ -21,7 +21,7 @@ const Tweet = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <TweetView id={newId} />
+        <TweetView key={newId} id={newId} />
       </main>
     </>
   );

@@ -1,13 +1,17 @@
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useUser } from '@supabase/auth-helpers-react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { MdDelete, MdEdit, MdMoreHoriz, MdPersonAddAlt1 } from 'react-icons/md';
+import { useReadTweetProfile } from '../../hooks/profiles';
+import {
+  useDeleteTweetMutation,
+  useReadTweet,
+  useReadTweetReplies,
+} from '../../hooks/tweet';
 import { PATH } from '../../routes/paths';
-import CreateTweet from '../../sections/CreateTweet';
 import EditTweet from '../../sections/EditTweet';
 import ReplyTweet from '../../sections/ReplyTweet';
 import useAlertStore from '../../store';
@@ -45,27 +49,28 @@ export type Tweet = {
 };
 
 type TweetProps = {
-  username: string;
-  displayName: string;
   tweet: Tweet;
-  replies?: Tweet[];
 };
 
-const Tweet = (props: TweetProps) => {
-  const { pathname } = useRouter();
+const Tweet = ({ tweet }: TweetProps) => {
+  const { pathname, push, query } = useRouter();
   const isTweetView = pathname === PATH.tweet;
 
+  const { created_at, updated_at, content, user_id, id, parent_id } = tweet;
+
+  const profile = useReadTweetProfile(user_id as string);
+  const parentTweet = useReadTweet(parent_id);
+  const parentProfile = useReadTweetProfile(parentTweet?.user_id as string);
+  const replies = useReadTweetReplies(id);
+
+  const deleteMutation = useDeleteTweetMutation(id);
+
   const user = useUser();
-  const qc = useQueryClient();
   const { addAlert } = useAlertStore();
-  const supabaseClient = useSupabaseClient();
-  const router = useRouter();
   const [editMode, setEditMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
   const [replyMode, setReplyMode] = useState(isTweetView);
 
-  const { username, displayName, tweet, replies } = props;
-  const { created_at, updated_at, content, id, user_id, parent_id } = tweet;
   const isEdited = created_at !== updated_at;
 
   const displayDate = () => {
@@ -85,9 +90,20 @@ const Tweet = (props: TweetProps) => {
   };
 
   const viewReply = (id: number) => {
-    router.push({
+    if (parseInt(query?.id as string) === id) {
+      toggleReplyMode();
+    } else {
+      push({
+        pathname: '/tweet/[id]',
+        query: { id: id },
+      });
+    }
+  };
+
+  const viewParent = () => {
+    push({
       pathname: '/tweet/[id]',
-      query: { id: id },
+      query: { id: parent_id },
     });
   };
 
@@ -101,15 +117,11 @@ const Tweet = (props: TweetProps) => {
 
   const handleDelete = async () => {
     if (user?.id !== tweet.user_id) return null;
-    const { error } = await supabaseClient
-      .from('tweets')
-      .delete()
-      .eq('id', tweet.id);
-    if (!error) {
-      qc.invalidateQueries(['tweets']);
-    } else {
+    try {
+      deleteMutation.mutate();
+    } catch (error) {
       addAlert({
-        message: error.message || 'Error deleting tweet',
+        message: 'Error deleting tweet',
         type: 'error',
       });
     }
@@ -146,8 +158,8 @@ const Tweet = (props: TweetProps) => {
   return (
     <Card className={styles.container} padding="1.5rem">
       <Header
-        name={username}
-        displayName={displayName}
+        name={profile?.username || 'unknownUser'}
+        displayName={profile?.display_name || 'Unknown user'}
         date={displayDate()}
         isEdited={isEdited}
         createMode={false}
@@ -156,6 +168,11 @@ const Tweet = (props: TweetProps) => {
           user_id === user?.id ? <MdMoreHoriz /> : <MdPersonAddAlt1 />
         }
       />
+      {isTweetView && parent_id ? (
+        <p className={styles.replying} onClick={() => viewParent()}>
+          {`Replying to @${parentProfile?.username}`}
+        </p>
+      ) : null}
       {editMode ? (
         <EditTweet tweet={tweet} toggleEditMode={toggleEditMode} />
       ) : (
@@ -163,11 +180,7 @@ const Tweet = (props: TweetProps) => {
       )}
       <Footer handleReply={handleReply} replyStats={replies?.length || 0} />
       {replyMode ? (
-        <ReplyTweet
-          tweet={tweet}
-          toggleReplyMode={toggleReplyMode}
-          replies={replies}
-        />
+        <ReplyTweet tweet={tweet} toggleReplyMode={toggleReplyMode} />
       ) : null}
 
       <Modal
@@ -183,15 +196,3 @@ const Tweet = (props: TweetProps) => {
 };
 
 export default Tweet;
-
-// Tweets
-// -id: int
-// -user_id: uuid
-// -content: text
-// -created_at: timestamp with time zone
-// -parent_id: int
-// Profiles
-// -id: uuid
-// -username: text
-// -display_name: text
-// -password: text

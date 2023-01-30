@@ -8,6 +8,8 @@ import TimelineLayout from '../components/layouts/timeline';
 import People from '../components/people';
 import Tweet from '../components/tweet';
 import Button from '../components/ui-kit/Button';
+import { useGetAllTweets } from '../hooks/tweet';
+import { useGetProfiles } from '../hooks/profiles';
 import useAlertStore from '../store';
 import CreateTweet from './CreateTweet';
 
@@ -17,27 +19,8 @@ const Timeline = () => {
   const router = useRouter();
   const { addAlert } = useAlertStore();
 
-  const getTweets = async () => {
-    const { data, error } = await supabaseClient
-      .from('tweets')
-      .select()
-      .order('updated_at', { ascending: false });
-    return data;
-  };
-
-  const getProfiles = async () => {
-    const { data, error } = await supabaseClient.from('profiles').select();
-    return data;
-  };
-
-  const { data: tweets } = useQuery({
-    queryKey: ['tweets'],
-    queryFn: getTweets,
-  });
-  const { data: profiles } = useQuery({
-    queryKey: ['profiles'],
-    queryFn: getProfiles,
-  });
+  const { data: tweets } = useGetAllTweets({});
+  const { data: profiles } = useGetProfiles();
 
   const handleSignOut = async () => {
     const { error } = await supabaseClient.auth.signOut();
@@ -68,20 +51,8 @@ const Timeline = () => {
       <TimelineLayout>
         <CreateTweet />
         {tweets.map((tweet) => {
-          const profile = profiles.find(
-            (profile) => tweet.user_id === profile.id
-          );
-          const replies = tweets.filter((item) => tweet.id === item.parent_id);
           if (tweet.parent_id) return null;
-          return (
-            <Tweet
-              key={tweet.id}
-              username={profile.username || 'unknown user'}
-              displayName={profile.display_name || ''}
-              tweet={tweet}
-              replies={replies}
-            />
-          );
+          return <Tweet key={tweet.id} tweet={tweet} />;
         })}
       </TimelineLayout>
       <SidebarLayout>

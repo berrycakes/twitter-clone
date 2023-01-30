@@ -1,16 +1,12 @@
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { useQueryClient } from '@tanstack/react-query';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useOnClickOutside } from 'usehooks-ts';
 import ControlledTextArea from '../components/form/ControlledTextArea';
 import FormProvider from '../components/form/FormProvider';
 import { Tweet } from '../components/tweet';
-import Header from '../components/tweet/header';
-import TweetButtonGroup from '../components/tweet/tweet-button-group';
 import Button from '../components/ui-kit/Button';
-import Card from '../components/ui-kit/Card';
 import Stack from '../components/ui-kit/Stack';
+import { useEditTweetMutation } from '../hooks/tweet';
 import useAlertStore from '../store';
 
 type FormFields = {
@@ -23,10 +19,8 @@ type EditTweetProps = {
 };
 
 const EditTweet = ({ tweet, toggleEditMode }: EditTweetProps) => {
-  const user = useUser();
-  const supabaseClient = useSupabaseClient();
+  const editMutation = useEditTweetMutation();
   const { addAlert } = useAlertStore();
-  const qc = useQueryClient();
   const methods = useForm<FormFields>({
     mode: 'onChange',
     defaultValues: {
@@ -44,16 +38,13 @@ const EditTweet = ({ tweet, toggleEditMode }: EditTweetProps) => {
     const payload = {
       content: data.content,
       updated_at: new Date(),
+      id: tweet.id,
     };
-    const { error } = await supabaseClient
-      .from('tweets')
-      .update(payload)
-      .eq('id', tweet.id);
-    if (!error) {
+    try {
+      editMutation.mutate(payload);
       toggleEditMode();
       reset();
-      qc.invalidateQueries(['tweets']);
-    } else {
+    } catch (error: any) {
       addAlert({
         message: error.message,
         type: 'error',

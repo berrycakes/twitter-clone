@@ -6,6 +6,14 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { MdDelete, MdEdit, MdMoreHoriz, MdPersonAddAlt1 } from 'react-icons/md';
+import {
+  useGetTweetProfile,
+  useReadTweetProfile,
+} from '../../../hooks/profiles';
+import {
+  useDeleteTweetMutation,
+  useReadTweetReplies,
+} from '../../../hooks/tweet';
 import EditTweet from '../../../sections/EditTweet';
 import ReplyTweet from '../../../sections/ReplyTweet';
 import useAlertStore from '../../../store';
@@ -43,25 +51,26 @@ export type Tweet = {
   parent_id?: number;
 };
 
-type TweetProps = {
-  username: string;
-  displayName: string;
+type ReplyProps = {
   tweet: Tweet;
-  replies?: Tweet[];
 };
 
-const Reply = (props: TweetProps) => {
-  const router = useRouter();
+const Reply = ({ tweet }: ReplyProps) => {
+  const { push, query } = useRouter();
   const user = useUser();
   const qc = useQueryClient();
   const { addAlert } = useAlertStore();
   const supabaseClient = useSupabaseClient();
+
+  const { created_at, updated_at, content, id, user_id, parent_id } = tweet;
+  const { data: profile } = useGetTweetProfile(user_id);
+  const replies = useReadTweetReplies(id);
+  const deleteMutation = useDeleteTweetMutation(id);
+
   const [editMode, setEditMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
   const [replyMode, setReplyMode] = useState(false);
 
-  const { username, displayName, tweet, replies } = props;
-  const { created_at, updated_at, content, id, user_id, parent_id } = tweet;
   const isEdited = created_at !== updated_at;
 
   const displayDate = () => {
@@ -81,10 +90,14 @@ const Reply = (props: TweetProps) => {
   };
 
   const viewReply = (id: number) => {
-    router.push({
-      pathname: '/tweet/[id]',
-      query: { id: id },
-    });
+    if (parseInt(query?.id as string) === id) {
+      toggleReplyMode();
+    } else {
+      push({
+        pathname: '/tweet/[id]',
+        query: { id: id },
+      });
+    }
   };
 
   const toggleDeleteMode = () => {
@@ -92,20 +105,16 @@ const Reply = (props: TweetProps) => {
   };
 
   const handleReply = () => {
-    viewReply(tweet.id);
+    viewReply(id);
   };
 
   const handleDelete = async () => {
     if (user?.id !== tweet.user_id) return null;
-    const { error } = await supabaseClient
-      .from('tweets')
-      .delete()
-      .eq('id', tweet.id);
-    if (!error) {
-      qc.invalidateQueries(['tweets']);
-    } else {
+    try {
+      deleteMutation.mutate();
+    } catch (error) {
       addAlert({
-        message: error.message || 'Error deleting tweet',
+        message: 'Error deleting tweet',
         type: 'error',
       });
     }
@@ -145,8 +154,8 @@ const Reply = (props: TweetProps) => {
 
       <Card className={styles.container} padding="1rem">
         <Header
-          name={username}
-          displayName={displayName}
+          name={profile?.username || 'unknownUser'}
+          displayName={profile?.display_name || 'Unknown user'}
           date={displayDate()}
           isEdited={isEdited}
           createMode={false}
@@ -161,13 +170,13 @@ const Reply = (props: TweetProps) => {
           <div className={styles.content}>{content}</div>
         )}
         <Footer handleReply={handleReply} replyStats={replies?.length || 0} />
-        {replyMode ? (
+        {/* {replyMode ? (
           <ReplyTweet
             tweet={tweet}
             toggleReplyMode={toggleReplyMode}
-            replies={replies}
+            // replies={replies}
           />
-        ) : null}
+        ) : null} */}
         <Modal
           actionLabel="Delete"
           header="Confirm"
