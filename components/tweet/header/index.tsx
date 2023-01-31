@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { ReactNode } from 'react';
 import { MdDelete, MdEdit, MdExpandMore, MdMoreHoriz } from 'react-icons/md';
+import { useIsMobile } from '../../../hooks/mediaQuery';
 import Dropdown, { DropdownItem } from '../../dropdown';
 import IconButton from '../../ui-kit/IconButton';
 import styles from './styles.module.css';
@@ -24,6 +25,7 @@ const Header = ({
   dropdownIcon,
   isEdited,
 }: HeaderProps) => {
+  const isMobile = useIsMobile();
   return (
     <div className={styles.container}>
       <div className={styles.imageContainer}>
@@ -40,8 +42,8 @@ const Header = ({
       ) : (
         <>
           <div className={styles.dateContainer}>
-            <div>{name}</div>
-            <p>•</p>
+            <div className={styles.nameContainer}>{name}</div>
+            {isMobile ? <p>•</p> : null}
             <div>{date}</div>
             {isEdited ? <div className={styles.edited}>edited</div> : null}
           </div>

@@ -4,11 +4,15 @@
   justify-content: center;
   color: var(--primary-mint-base);
   background-color: transparent;
-  border: 1px solid var(--primary-mint-base);
   border-radius: 50%;
   cursor: pointer;
+  border: transparent;
 }
 
 .disabled {
   opacity: 0.4;
+}
+
+.outlined {
+  border: 1px solid var(--primary-mint-base);
 }

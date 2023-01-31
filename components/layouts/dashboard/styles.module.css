@@ -9,3 +9,17 @@
   place-items: flex-start center;
   grid-column-gap: 1.5rem;
 }
+
+@media screen and (max-width: 1024px) {
+  .container {
+    max-width: var(--max-width);
+    grid-column-gap: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    max-width: var(--max-width);
+    grid-template-columns: 1fr;
+  }
+}

@@ -8,10 +8,13 @@ import TimelineLayout from '../components/layouts/timeline';
 import People from '../components/people';
 import Tweet from '../components/tweet';
 import Button from '../components/ui-kit/Button';
+import IconButton from '../components/ui-kit/IconButton';
 import { useGetAllTweets } from '../hooks/tweet';
 import { useGetProfiles } from '../hooks/profiles';
 import useAlertStore from '../store';
 import CreateTweet from './CreateTweet';
+import { useIsDesktop, useIsMobile, useIsTablet } from '../hooks/mediaQuery';
+import { MdExitToApp } from 'react-icons/md';
 
 const Timeline = () => {
   const supabaseClient = useSupabaseClient();
@@ -21,6 +24,10 @@ const Timeline = () => {
 
   const { data: tweets } = useGetAllTweets({});
   const { data: profiles } = useGetProfiles();
+
+  const isMobile = useIsMobile();
+  const isDesktop = useIsDesktop();
+  const isTablet = useIsTablet();
 
   const handleSignOut = async () => {
     const { error } = await supabaseClient.auth.signOut();
@@ -41,33 +48,45 @@ const Timeline = () => {
     }
   };
 
-  if (!profiles || !tweets) return null;
-
   return (
     <DashboardLayout>
-      <NavigationLayout user={user}>
-        <Button onClick={handleSignOut}>Sign out</Button>
-      </NavigationLayout>
+      {isMobile ? (
+        <NavigationLayout user={user}>
+          {isDesktop ? (
+            <Button onClick={handleSignOut}>Sign out</Button>
+          ) : (
+            <IconButton
+              outlined={false}
+              width={30}
+              height={30}
+              icon={<MdExitToApp size={30} onClick={handleSignOut} />}
+            />
+          )}
+        </NavigationLayout>
+      ) : null}
+
       <TimelineLayout>
         <CreateTweet />
-        {tweets.map((tweet) => {
+        {tweets?.map((tweet) => {
           if (tweet.parent_id) return null;
           return <Tweet key={tweet.id} tweet={tweet} />;
         })}
       </TimelineLayout>
-      <SidebarLayout>
-        {profiles.map((profile) => {
-          if (!profile.display_name || !profile.username) return null;
-          if (profile.username === user?.user_metadata?.username) return null;
-          return (
-            <People
-              key={profile.id}
-              name={profile.display_name}
-              username={profile.username}
-            />
-          );
-        })}
-      </SidebarLayout>
+      {isTablet ? (
+        <SidebarLayout>
+          {profiles?.map((profile) => {
+            if (!profile.display_name || !profile.username) return null;
+            if (profile.username === user?.user_metadata?.username) return null;
+            return (
+              <People
+                key={profile.id}
+                name={profile.display_name}
+                username={profile.username}
+              />
+            );
+          })}
+        </SidebarLayout>
+      ) : null}
     </DashboardLayout>
   );
 };

@@ -1,6 +1,7 @@
 :root {
-  /* spacing */
+  /* desktop spacing */
   --max-width: 1440px;
+  --card-min-width: 480px;
   --border-radius: 12px;
   --button-border-radius: 100px;
   /* colors */
@@ -99,8 +100,7 @@ html,
 body {
   max-width: var(--max-width);
   background-color: var(--background);
-  max-width: 100vw;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 
 a {
@@ -142,4 +142,25 @@ h6 {
   src: url('../fonts/larsseit/Larsseit-Italic.otf');
   font-weight: normal;
   font-style: italic;
+}
+
+@media screen and (max-width: 480px) {
+  :root {
+    /* mobile spacing */
+    --mobile-full: 100%;
+    --max-width: 480px;
+    --card-min-width: 320px;
+    --border-radius: 12px;
+    --button-border-radius: 100px;
+  }
+
+  html * {
+    font-size: 12px;
+  }
+
+  body {
+    overflow-x: scroll;
+    max-width: var(--max-width);
+    max-width: 100%;
+  }
 }

@@ -11,6 +11,7 @@ import {
   MdPerson,
   MdTag,
 } from 'react-icons/md';
+import { useIsDesktop } from '../../../hooks/mediaQuery';
 import styles from './styles.module.css';
 
 type NavigationLayoutProps = {
@@ -22,34 +23,74 @@ const NavItem = ({
   icon,
   title,
   selected,
+  displayLabel,
 }: {
   icon: ReactNode;
   title: string;
   selected?: boolean;
+  displayLabel: boolean;
 }) => {
   return (
     <div className={clsx(styles.navItem, selected && styles.selected)}>
       <div className={styles.iconContainer}>{icon}</div>
-      <p>{title}</p>
+      {displayLabel ? <p>{title}</p> : null}
     </div>
   );
 };
 
 const NavigationLayout = ({ children, user }: NavigationLayoutProps) => {
+  const isDesktop = useIsDesktop();
+  const size = isDesktop ? 20 : 30;
   return (
     <div className={styles.container}>
-      <div className={styles.welcome}>
-        <p>Hello, </p>
-        <p>{user?.user_metadata?.display_name}</p>
-      </div>
-      <NavItem selected title="Home" icon={<MdHome size={20} />} />
-      <NavItem title="Explore" icon={<MdTag size={20} />} />
-      <NavItem title="Notifications" icon={<MdNotifications size={20} />} />
-      <NavItem title="Messages" icon={<MdEmail size={20} />} />
-      <NavItem title="Bookmarks" icon={<MdBookmark size={20} />} />
-      <NavItem title="List" icon={<MdList size={20} />} />
-      <NavItem title="Profile" icon={<MdPerson size={20} />} />
-      <NavItem title="More" icon={<MdMoreHoriz size={20} />} />
+      {isDesktop ? (
+        <div className={styles.welcome}>
+          <p>Hello, </p>
+          <p>{user?.user_metadata?.display_name}</p>
+        </div>
+      ) : null}
+
+      <NavItem
+        selected
+        title="Home"
+        displayLabel={isDesktop}
+        icon={<MdHome size={size} />}
+      />
+      <NavItem
+        title="Explore"
+        displayLabel={isDesktop}
+        icon={<MdTag size={size} />}
+      />
+      <NavItem
+        title="Notifications"
+        displayLabel={isDesktop}
+        icon={<MdNotifications size={size} />}
+      />
+      <NavItem
+        title="Messages"
+        displayLabel={isDesktop}
+        icon={<MdEmail size={size} />}
+      />
+      <NavItem
+        title="Bookmarks"
+        displayLabel={isDesktop}
+        icon={<MdBookmark size={size} />}
+      />
+      <NavItem
+        title="List"
+        displayLabel={isDesktop}
+        icon={<MdList size={size} />}
+      />
+      <NavItem
+        title="Profile"
+        displayLabel={isDesktop}
+        icon={<MdPerson size={size} />}
+      />
+      <NavItem
+        title="More"
+        displayLabel={isDesktop}
+        icon={<MdMoreHoriz size={size} />}
+      />
       <div />
       {children}
     </div>

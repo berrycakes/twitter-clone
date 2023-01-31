@@ -7,6 +7,7 @@ import { Tweet as TweetType } from '../components/tweet';
 import Reply from '../components/tweet/reply';
 import Button from '../components/ui-kit/Button';
 import Stack from '../components/ui-kit/Stack';
+import { useIsMobile } from '../hooks/mediaQuery';
 import { useReadTweetReplies, useReplyTweetMutation } from '../hooks/tweet';
 import useAlertStore from '../store';
 
@@ -61,39 +62,32 @@ const ReplyTweet = ({ tweet, toggleReplyMode }: ReplyTweetProps) => {
       });
     }
   };
+  const isMobile = useIsMobile();
 
   return (
     <>
-      {replyForm ? (
-        <Stack fullWidth>
-          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <Stack divider margin="1rem 0 0 0" />
-            <ControlledTextArea
-              type="create"
-              name="content"
-              rules={{
-                required: { value: true, message: 'Content is required' },
-                maxLength: { value: 225, message: 'Exceeded maximum length' },
-              }}
-            />
-            <Stack row gap={16} padding={16}>
-              <Stack />
-              <Button
-                type="submit"
-                disabled={!isValid || !watch('content') || isSubmitting}
-              >
-                Reply
-              </Button>
-            </Stack>
-          </FormProvider>
-        </Stack>
-      ) : (
-        <Stack row padding="1rem 0">
-          <Button type="button" variant="primary" onClick={toggleReplyForm}>
-            Reply
-          </Button>
-        </Stack>
-      )}
+      <Stack fullWidth>
+        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+          <Stack divider margin="1rem 0 0 0" />
+          <ControlledTextArea
+            type="create"
+            name="content"
+            rules={{
+              required: { value: true, message: 'Content is required' },
+              maxLength: { value: 225, message: 'Exceeded maximum length' },
+            }}
+          />
+          <Stack justify={!isMobile ? 'center' : 'flex-end'} row padding={16}>
+            <Button
+              type="submit"
+              disabled={!isValid || !watch('content') || isSubmitting}
+              fullWidth={!isMobile}
+            >
+              Reply
+            </Button>
+          </Stack>
+        </FormProvider>
+      </Stack>
 
       {replies?.length
         ? replies.map((reply) => {

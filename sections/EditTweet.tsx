@@ -70,13 +70,19 @@ const EditTweet = ({ tweet, toggleEditMode }: EditTweetProps) => {
         <Stack row gap={16} padding={16}>
           <Button
             type="submit"
+            fullWidth
             disabled={
               !isValid || watch('content') === tweet.content || isSubmitting
             }
           >
-            Submit
+            Update
           </Button>
-          <Button type="button" variant="error" onClick={toggleEditMode}>
+          <Button
+            type="button"
+            variant="error"
+            fullWidth
+            onClick={toggleEditMode}
+          >
             Cancel
           </Button>
         </Stack>

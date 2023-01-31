@@ -7,6 +7,14 @@
   grid-row-gap: 1.5rem;
 }
 
+@media screen and (max-width: 480px) {
+  .container {
+    width: 100%;
+    min-width: 300px;
+    padding: 0.5rem;
+  }
+}
+
 .container h6 {
   width: 100%;
   text-align: left;
