@@ -11,12 +11,12 @@ import {
   MdPerson,
   MdTag,
 } from 'react-icons/md';
-import { useIsDesktop } from '../../../hooks/mediaQuery';
 import styles from './styles.module.css';
 
 type NavigationLayoutProps = {
   children: ReactNode;
   user: User | null;
+  condensed: boolean;
 };
 
 const NavItem = ({
@@ -38,12 +38,15 @@ const NavItem = ({
   );
 };
 
-const NavigationLayout = ({ children, user }: NavigationLayoutProps) => {
-  const isDesktop = useIsDesktop();
-  const size = isDesktop ? 20 : 30;
+const NavigationLayout = ({
+  children,
+  user,
+  condensed,
+}: NavigationLayoutProps) => {
+  const size = condensed ? 20 : 30;
   return (
     <div className={styles.container}>
-      {isDesktop ? (
+      {condensed ? (
         <div className={styles.welcome}>
           <p>Hello, </p>
           <p>{user?.user_metadata?.display_name}</p>
@@ -53,42 +56,42 @@ const NavigationLayout = ({ children, user }: NavigationLayoutProps) => {
       <NavItem
         selected
         title="Home"
-        displayLabel={isDesktop}
+        displayLabel={condensed}
         icon={<MdHome size={size} />}
       />
       <NavItem
         title="Explore"
-        displayLabel={isDesktop}
+        displayLabel={condensed}
         icon={<MdTag size={size} />}
       />
       <NavItem
         title="Notifications"
-        displayLabel={isDesktop}
+        displayLabel={condensed}
         icon={<MdNotifications size={size} />}
       />
       <NavItem
         title="Messages"
-        displayLabel={isDesktop}
+        displayLabel={condensed}
         icon={<MdEmail size={size} />}
       />
       <NavItem
         title="Bookmarks"
-        displayLabel={isDesktop}
+        displayLabel={condensed}
         icon={<MdBookmark size={size} />}
       />
       <NavItem
         title="List"
-        displayLabel={isDesktop}
+        displayLabel={condensed}
         icon={<MdList size={size} />}
       />
       <NavItem
         title="Profile"
-        displayLabel={isDesktop}
+        displayLabel={condensed}
         icon={<MdPerson size={size} />}
       />
       <NavItem
         title="More"
-        displayLabel={isDesktop}
+        displayLabel={condensed}
         icon={<MdMoreHoriz size={size} />}
       />
       <div />

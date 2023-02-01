@@ -77,11 +77,11 @@ const ReplyTweet = ({ tweet, toggleReplyMode }: ReplyTweetProps) => {
               maxLength: { value: 225, message: 'Exceeded maximum length' },
             }}
           />
-          <Stack justify={!isMobile ? 'center' : 'flex-end'} row padding={16}>
+          <Stack justify={isMobile ? 'center' : 'flex-end'} row padding={16}>
             <Button
               type="submit"
               disabled={!isValid || !watch('content') || isSubmitting}
-              fullWidth={!isMobile}
+              fullWidth={isMobile}
             >
               Reply
             </Button>

@@ -50,17 +50,17 @@ const Timeline = () => {
 
   return (
     <DashboardLayout>
-      {isMobile ? (
-        <NavigationLayout user={user}>
-          {isDesktop ? (
-            <Button onClick={handleSignOut}>Sign out</Button>
-          ) : (
+      {!isMobile ? (
+        <NavigationLayout user={user} condensed={!isTablet}>
+          {isTablet ? (
             <IconButton
               outlined={false}
               width={30}
               height={30}
               icon={<MdExitToApp size={30} onClick={handleSignOut} />}
             />
+          ) : (
+            <Button onClick={handleSignOut}>Sign out</Button>
           )}
         </NavigationLayout>
       ) : null}
@@ -72,7 +72,7 @@ const Timeline = () => {
           return <Tweet key={tweet.id} tweet={tweet} />;
         })}
       </TimelineLayout>
-      {isTablet ? (
+      {!isTablet ? (
         <SidebarLayout>
           {profiles?.map((profile) => {
             if (!profile.display_name || !profile.username) return null;

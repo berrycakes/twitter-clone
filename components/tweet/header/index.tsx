@@ -43,7 +43,7 @@ const Header = ({
         <>
           <div className={styles.dateContainer}>
             <div className={styles.nameContainer}>{name}</div>
-            {isMobile ? <p>•</p> : null}
+            <p>•</p>
             <div>{date}</div>
             {isEdited ? <div className={styles.edited}>edited</div> : null}
           </div>
