@@ -43,6 +43,10 @@
   column-gap: 0.25rem;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 1168px) {
   .container {
     display: grid;

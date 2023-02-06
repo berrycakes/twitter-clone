@@ -45,6 +45,9 @@
 .nameContainer {
   grid-area: 1 / 2 / 3 / 10;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dateContainer {

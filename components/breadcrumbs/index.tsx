@@ -6,14 +6,22 @@ import { PATH } from '../../routes/paths';
 import styles from './styles.module.css';
 
 const Breadcrumbs = () => {
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
   const title = getKeyByValue(PATH, pathname);
+
+  const handleClickHome = () => {
+    if (pathname === PATH.home) {
+      return null;
+    } else {
+      push(PATH.home);
+    }
+  };
 
   return (
     <div className={styles.container}>
-      <Link href="/">
-        <p className={styles.rootPath}>Home</p>
-      </Link>
+      <p className={styles.rootPath} onClick={handleClickHome}>
+        Home
+      </p>
       <div className={styles.iconContainer}>
         <MdChevronRight size={20} />
       </div>

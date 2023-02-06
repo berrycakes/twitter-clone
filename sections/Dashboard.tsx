@@ -1,6 +1,7 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { QueryCache, useQuery } from '@tanstack/react-query';
+import { QueryCache } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { MdExitToApp } from 'react-icons/md';
 import DashboardLayout from '../components/layouts/dashboard';
 import NavigationLayout from '../components/layouts/navigation';
 import SidebarLayout from '../components/layouts/sidebar';
@@ -9,12 +10,11 @@ import People from '../components/people';
 import Tweet from '../components/tweet';
 import Button from '../components/ui-kit/Button';
 import IconButton from '../components/ui-kit/IconButton';
-import { useGetAllTweets } from '../hooks/tweet';
+import { useIsTablet } from '../hooks/mediaQuery';
 import { useGetProfiles } from '../hooks/profiles';
+import { useGetAllTweets } from '../hooks/tweet';
 import useAlertStore from '../store';
 import CreateTweet from './CreateTweet';
-import { useIsDesktop, useIsMobile, useIsTablet } from '../hooks/mediaQuery';
-import { MdExitToApp } from 'react-icons/md';
 
 const Timeline = () => {
   const supabaseClient = useSupabaseClient();
@@ -24,9 +24,6 @@ const Timeline = () => {
 
   const { data: tweets } = useGetAllTweets({});
   const { data: profiles } = useGetProfiles();
-
-  const isMobile = useIsMobile();
-  const isDesktop = useIsDesktop();
   const isTablet = useIsTablet();
 
   const handleSignOut = async () => {

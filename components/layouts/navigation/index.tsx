@@ -30,14 +30,23 @@ const NavItem = ({
   title,
   selected,
   displayLabel,
+  onClick,
 }: {
   icon: ReactNode;
   title: string;
   selected?: boolean;
   displayLabel: boolean;
+  onClick?: VoidFunction;
 }) => {
   return (
-    <div className={clsx(styles.navItem, selected && styles.selected)}>
+    <div
+      onClick={onClick}
+      className={clsx(
+        styles.navItem,
+        selected && styles.selected,
+        onClick && styles.clickable
+      )}
+    >
       <div className={styles.iconContainer}>{icon}</div>
       {displayLabel ? <p>{title}</p> : null}
     </div>
@@ -49,7 +58,7 @@ const NavigationLayout = ({
   user,
   condensed,
 }: NavigationLayoutProps) => {
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const size = condensed ? 20 : 30;
@@ -61,7 +70,11 @@ const NavigationLayout = ({
   };
 
   const handleClickHome = () => {
-    push(PATH.home);
+    if (pathname === PATH.home) {
+      return;
+    } else {
+      push(PATH.home);
+    }
   };
 
   useEffect(() => {
@@ -104,6 +117,7 @@ const NavigationLayout = ({
             title="Home"
             displayLabel={condensed}
             icon={<MdHome size={size} onClick={handleClickHome} />}
+            onClick={handleClickHome}
           />
           <NavItem
             title="Explore"
