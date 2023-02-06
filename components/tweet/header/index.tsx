@@ -1,5 +1,7 @@
 import Image from 'next/image';
-import { MdExpandMore, MdMoreHoriz } from 'react-icons/md';
+import { ReactNode } from 'react';
+import { MdDelete, MdEdit, MdExpandMore, MdMoreHoriz } from 'react-icons/md';
+import Dropdown, { DropdownItem } from '../../dropdown';
 import IconButton from '../../ui-kit/IconButton';
 import styles from './styles.module.css';
 
@@ -7,7 +9,10 @@ type HeaderProps = {
   name?: string;
   displayName: string;
   date?: string;
+  isEdited?: boolean;
   createMode: boolean;
+  dropdownItems?: DropdownItem[];
+  dropdownIcon?: ReactNode;
 };
 
 const Header = ({
@@ -15,6 +20,9 @@ const Header = ({
   date,
   displayName,
   createMode = false,
+  dropdownItems,
+  dropdownIcon,
+  isEdited,
 }: HeaderProps) => {
   return (
     <div className={styles.container}>
@@ -35,9 +43,10 @@ const Header = ({
             <div>{name}</div>
             <p>•</p>
             <div>{date}</div>
+            {isEdited ? <div className={styles.edited}>edited</div> : null}
           </div>
           <div className={styles.menuContainer}>
-            <IconButton icon={<MdMoreHoriz size={20} />} />
+            <Dropdown items={dropdownItems} icon={dropdownIcon} />
           </div>
         </>
       )}

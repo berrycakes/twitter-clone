@@ -8,10 +8,11 @@ type ControlledTextAreaProps = {
   type: 'create' | 'reply';
   rules?: {};
   rows?: number;
+  defaultValue?: string;
 };
 
 const ControlledTextArea = (props: ControlledTextAreaProps) => {
-  const { name, rules, label, placeholder, type, rows } = props;
+  const { name, rules, label, placeholder, type, rows, defaultValue } = props;
   const { control } = useFormContext();
 
   return (
@@ -28,6 +29,7 @@ const ControlledTextArea = (props: ControlledTextAreaProps) => {
           label={label}
           placeholder={placeholder}
           type={type}
+          defaultValue={defaultValue}
         />
       )}
     />

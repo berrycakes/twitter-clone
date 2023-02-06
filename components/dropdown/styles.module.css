@@ -1,0 +1,47 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  overflow: visible;
+}
+
+.menu {
+  z-index: 5;
+  position: absolute;
+  top: 1rem;
+  right: 0.5rem;
+}
+
+.menuButton {
+  width: 210px;
+  height: 40px;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  color: var(--neutral-gray-400);
+  transition: all 0.3s;
+}
+
+.menuButton:hover {
+  background-color: var(--neutral-light-gray-200);
+  color: var(--primary-mint-base);
+}
+
+.customHover:hover {
+  color: var(--error-base) !important;
+}
+
+.itemIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+}
+
+.hidden {
+  display: none;
+}

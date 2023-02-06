@@ -11,6 +11,7 @@ type TextAreaProps = {
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   error?: FieldError;
   rows?: number;
+  defaultValue?: string;
 };
 
 type FooterProps = {
@@ -34,7 +35,16 @@ const Footer = ({ type, charCount }: FooterProps) => {
 };
 
 const TextArea = (props: TextAreaProps) => {
-  const { value, label, placeholder, onChange, error, type, rows = 4 } = props;
+  const {
+    value,
+    label,
+    placeholder,
+    onChange,
+    error,
+    type,
+    rows = 4,
+    defaultValue,
+  } = props;
 
   return (
     <div className={styles.root}>
@@ -53,6 +63,7 @@ const TextArea = (props: TextAreaProps) => {
           placeholder={placeholder}
           onChange={onChange}
           className={clsx(styles.input, error && styles.inputError)}
+          defaultValue={defaultValue}
         />
         <Footer type={type} charCount={value.length || 0} />
       </div>
