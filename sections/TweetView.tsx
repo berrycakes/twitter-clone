@@ -10,6 +10,7 @@ import People from '../components/people';
 import Tweet from '../components/tweet';
 import Button from '../components/ui-kit/Button';
 import IconButton from '../components/ui-kit/IconButton';
+import Unavailable from '../components/unavailable';
 import { useIsDesktop, useIsMobile, useIsTablet } from '../hooks/mediaQuery';
 import { useGetProfiles } from '../hooks/profiles';
 import { useGetAllTweets, useReadTweet } from '../hooks/tweet';
@@ -50,22 +51,22 @@ const TweetView = ({ id }: { id: number }) => {
 
   return (
     <DashboardLayout>
-      {!isMobile ? (
-        <NavigationLayout user={user} condensed={!isTablet}>
-          {isTablet ? (
-            <IconButton
-              outlined={false}
-              width={30}
-              height={30}
-              icon={<MdExitToApp size={30} onClick={handleSignOut} />}
-            />
-          ) : (
-            <Button onClick={handleSignOut}>Sign out</Button>
-          )}
-        </NavigationLayout>
-      ) : null}
+      <NavigationLayout user={user} condensed={!isTablet}>
+        {isTablet ? (
+          <IconButton
+            outlined={false}
+            width={30}
+            height={30}
+            icon={<MdExitToApp size={30} onClick={handleSignOut} />}
+          />
+        ) : (
+          <Button onClick={handleSignOut}>Sign out</Button>
+        )}
+      </NavigationLayout>
 
-      <TimelineLayout>{tweet ? <Tweet tweet={tweet} /> : null}</TimelineLayout>
+      <TimelineLayout>
+        {tweet ? <Tweet tweet={tweet} /> : <Unavailable />}
+      </TimelineLayout>
       {!isTablet ? (
         <SidebarLayout>
           {profiles?.map((profile) => {

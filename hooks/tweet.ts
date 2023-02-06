@@ -16,8 +16,6 @@ type Tweet = {
 };
 
 const TWEETS_CACHE_KEY = 'tweets';
-const TWEET_CACHE_KEY = 'tweet';
-const TWEET_REPLIES_CACHE_KEY = 'tweetReplies';
 
 export const useGetAllTweets = ({
   orderBy = 'updated_at',
@@ -54,6 +52,12 @@ export const useReadTweetReplies = (id: number) => {
   if (!id) return null;
   const tweets = useReadAllTweets();
   return tweets?.filter((item) => id === item.parent_id);
+};
+
+export const useReadProfileTweets = (user_id: string) => {
+  if (!user_id) return null;
+  const tweets = useReadAllTweets();
+  return tweets?.filter((item) => user_id === item.user_id);
 };
 
 export const useDeleteTweetMutation = (id: number) => {

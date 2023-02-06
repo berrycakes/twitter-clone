@@ -13,6 +13,7 @@
   overflow: hidden;
   border: 1px solid var(--neutral-gray-100);
   grid-area: 1 / 1 / 3 / 2;
+  cursor: pointer;
 }
 
 .menuContainer {
@@ -43,6 +44,7 @@
 
 .nameContainer {
   grid-area: 1 / 2 / 3 / 10;
+  cursor: pointer;
 }
 
 .dateContainer {

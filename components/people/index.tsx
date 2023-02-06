@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { MdPersonAddAlt1 } from 'react-icons/md';
 import IconButton from '../ui-kit/IconButton';
 import styles from './styles.module.css';
@@ -9,8 +10,18 @@ type HeaderProps = {
 };
 
 const People = ({ name, username }: HeaderProps) => {
+  const { push } = useRouter();
+
+  const viewProfile = () => {
+    if (!username) return null;
+    push({
+      pathname: '/profile/[username]',
+      query: { username: username },
+    });
+  };
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={viewProfile}>
       <div className={styles.imageContainer}>
         <Image src="/success.png" alt="placeholder" width={40} height={40} />
       </div>

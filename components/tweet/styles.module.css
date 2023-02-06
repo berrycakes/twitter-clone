@@ -7,7 +7,9 @@
 }
 
 .content {
-  word-break: break-all;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   margin: 1.5rem 0;
 }
 

@@ -54,7 +54,8 @@ type TweetProps = {
 
 const Tweet = ({ tweet }: TweetProps) => {
   const { pathname, push, query } = useRouter();
-  const isTweetView = pathname === PATH.tweet;
+  const isTweetView = pathname !== PATH.dashboard;
+  const isProfileView = pathname === PATH.profile;
 
   const { created_at, updated_at, content, user_id, id, parent_id } = tweet;
 
@@ -158,8 +159,7 @@ const Tweet = ({ tweet }: TweetProps) => {
   return (
     <Card className={styles.container} padding="1.5rem">
       <Header
-        name={profile?.username || 'unknownUser'}
-        displayName={profile?.display_name || 'Unknown user'}
+        profile={profile}
         date={displayDate()}
         isEdited={isEdited}
         createMode={false}
@@ -179,7 +179,7 @@ const Tweet = ({ tweet }: TweetProps) => {
         <div className={styles.content}>{content}</div>
       )}
       <Footer handleReply={handleReply} replyStats={replies?.length || 0} />
-      {replyMode ? (
+      {replyMode && !isProfileView ? (
         <ReplyTweet tweet={tweet} toggleReplyMode={toggleReplyMode} />
       ) : null}
 

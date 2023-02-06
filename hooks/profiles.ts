@@ -1,7 +1,7 @@
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-type Profile = {
+export type Profile = {
   avatar_url?: string;
   display_name?: string;
   email?: string;
@@ -39,6 +39,14 @@ export const useReadTweetProfile = (userId: string) => {
     (profile) => profile.id === userId
   );
   return profile as Profile;
+};
+export const useReadIdFromUsername = (username: string) => {
+  if (!username) return null;
+  const profiles = useReadAllProfiles();
+  const profile: Profile | undefined = profiles?.find(
+    (profile) => profile.username === username
+  );
+  return profile?.id;
 };
 
 export const useGetTweetProfile = (userId: string) => {

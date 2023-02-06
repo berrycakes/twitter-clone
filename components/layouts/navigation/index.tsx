@@ -1,16 +1,22 @@
 import { User } from '@supabase/supabase-js';
 import clsx from 'clsx';
-import { ReactNode } from 'react';
+import { useRouter } from 'next/router';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import {
   MdBookmark,
   MdEmail,
   MdHome,
   MdList,
+  MdMenu,
   MdMoreHoriz,
   MdNotifications,
   MdPerson,
   MdTag,
 } from 'react-icons/md';
+import { useOnClickOutside } from 'usehooks-ts';
+import { useIsMobile } from '../../../hooks/mediaQuery';
+import { PATH } from '../../../routes/paths';
+import IconButton from '../../ui-kit/IconButton';
 import styles from './styles.module.css';
 
 type NavigationLayoutProps = {
@@ -43,59 +49,101 @@ const NavigationLayout = ({
   user,
   condensed,
 }: NavigationLayoutProps) => {
+  const { push } = useRouter();
+  const [isVisible, setIsVisible] = useState(true);
+  const isMobile = useIsMobile();
   const size = condensed ? 20 : 30;
-  return (
-    <div className={styles.container}>
-      {condensed ? (
-        <div className={styles.welcome}>
-          <p>Hello, </p>
-          <p>{user?.user_metadata?.display_name}</p>
-        </div>
-      ) : null}
+  const ref = useRef(null);
 
-      <NavItem
-        selected
-        title="Home"
-        displayLabel={condensed}
-        icon={<MdHome size={size} />}
-      />
-      <NavItem
-        title="Explore"
-        displayLabel={condensed}
-        icon={<MdTag size={size} />}
-      />
-      <NavItem
-        title="Notifications"
-        displayLabel={condensed}
-        icon={<MdNotifications size={size} />}
-      />
-      <NavItem
-        title="Messages"
-        displayLabel={condensed}
-        icon={<MdEmail size={size} />}
-      />
-      <NavItem
-        title="Bookmarks"
-        displayLabel={condensed}
-        icon={<MdBookmark size={size} />}
-      />
-      <NavItem
-        title="List"
-        displayLabel={condensed}
-        icon={<MdList size={size} />}
-      />
-      <NavItem
-        title="Profile"
-        displayLabel={condensed}
-        icon={<MdPerson size={size} />}
-      />
-      <NavItem
-        title="More"
-        displayLabel={condensed}
-        icon={<MdMoreHoriz size={size} />}
-      />
-      <div />
-      {children}
+  const toggleVisibility = () => {
+    if (condensed) return null;
+    setIsVisible(!isVisible);
+  };
+
+  const handleClickHome = () => {
+    push(PATH.home);
+  };
+
+  useEffect(() => {
+    if (isMobile) {
+      setIsVisible(false);
+    } else {
+      setIsVisible(true);
+    }
+  }, [isMobile]);
+
+  useOnClickOutside(ref, toggleVisibility);
+
+  if (!isVisible) {
+    return (
+      <div className={clsx(styles.floatingIcon)}>
+        <IconButton
+          onClick={toggleVisibility}
+          outlined={false}
+          icon={<MdMenu size={30} />}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={clsx(styles.container, !isVisible && styles.notVisible)}
+      ref={ref}
+    >
+      <div className={styles.sticky}>
+        <div className={styles.buttonContainer}>
+          {condensed ? (
+            <div className={styles.welcome}>
+              <p>Hello, </p>
+              <p>{user?.user_metadata?.display_name}</p>
+            </div>
+          ) : null}
+          <NavItem
+            selected
+            title="Home"
+            displayLabel={condensed}
+            icon={<MdHome size={size} onClick={handleClickHome} />}
+          />
+          <NavItem
+            title="Explore"
+            displayLabel={condensed}
+            icon={<MdTag size={size} />}
+          />
+          <NavItem
+            title="Notifications"
+            displayLabel={condensed}
+            icon={<MdNotifications size={size} />}
+          />
+          <NavItem
+            title="Messages"
+            displayLabel={condensed}
+            icon={<MdEmail size={size} />}
+          />
+          <NavItem
+            title="Bookmarks"
+            displayLabel={condensed}
+            icon={<MdBookmark size={size} />}
+          />
+          <NavItem
+            title="List"
+            displayLabel={condensed}
+            icon={<MdList size={size} />}
+          />
+          <NavItem
+            title="Profile"
+            displayLabel={condensed}
+            icon={<MdPerson size={size} />}
+          />
+          <NavItem
+            title="More"
+            displayLabel={condensed}
+            icon={<MdMoreHoriz size={size} />}
+          />
+          <div />
+          {children}
+        </div>
+      </div>
     </div>
   );
 };

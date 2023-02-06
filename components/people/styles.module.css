@@ -5,6 +5,7 @@
   grid-template-columns: 40px repeat(11, 1fr);
   grid-template-rows: repeat(2, 1fr);
   grid-column-gap: 0.75rem;
+  cursor: pointer;
 }
 
 .imageContainer {

@@ -1,4 +1,5 @@
 .container {
+  grid-area: 1 / 3 / 2 / 4;
   padding: 1rem;
   width: 100%;
 }

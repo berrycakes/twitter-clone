@@ -50,20 +50,18 @@ const Timeline = () => {
 
   return (
     <DashboardLayout>
-      {!isMobile ? (
-        <NavigationLayout user={user} condensed={!isTablet}>
-          {isTablet ? (
-            <IconButton
-              outlined={false}
-              width={30}
-              height={30}
-              icon={<MdExitToApp size={30} onClick={handleSignOut} />}
-            />
-          ) : (
-            <Button onClick={handleSignOut}>Sign out</Button>
-          )}
-        </NavigationLayout>
-      ) : null}
+      <NavigationLayout user={user} condensed={!isTablet}>
+        {isTablet ? (
+          <IconButton
+            outlined={false}
+            width={30}
+            height={30}
+            icon={<MdExitToApp size={30} onClick={handleSignOut} />}
+          />
+        ) : (
+          <Button onClick={handleSignOut}>Sign out</Button>
+        )}
+      </NavigationLayout>
 
       <TimelineLayout>
         <CreateTweet />

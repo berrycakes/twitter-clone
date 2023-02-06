@@ -6,6 +6,16 @@
   min-height: 100vh;
 }
 
+.mainDashboard {
+  position: relative;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
 .signUp {
   min-width: var(--card-min-width);
   margin: auto;

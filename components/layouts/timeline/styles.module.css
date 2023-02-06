@@ -1,17 +1,32 @@
 .container {
+  grid-area: 1 / 2 / 2 / 3;
   min-width: 588px;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
   place-items: flex-start center;
   grid-row-gap: 1.5rem;
+  margin: 0 1rem 1rem 1rem;
+  overflow-y: scroll;
+  max-height: 100vh;
+  scrollbar-width: none;
 }
 
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    min-width: 480px;
+  }
+}
 @media screen and (max-width: 480px) {
   .container {
     width: 100%;
     min-width: 300px;
     padding: 0.5rem;
+    grid-area: 2 / 1 / 3 / 2;
   }
 }
 

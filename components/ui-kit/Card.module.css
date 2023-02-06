@@ -4,3 +4,7 @@
   border-color: var(--neutral-light-gray-300);
   border-radius: 4px;
 }
+
+.fullWidth {
+  width: 100%;
+}

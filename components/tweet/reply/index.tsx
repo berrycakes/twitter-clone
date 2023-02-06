@@ -154,7 +154,7 @@ const Reply = ({ tweet }: ReplyProps) => {
 
       <Card className={styles.container} padding="1rem">
         <Header
-          name={profile?.username || 'unknownUser'}
+          profile={profile}
           displayName={profile?.display_name || 'Unknown user'}
           date={displayDate()}
           isEdited={isEdited}
