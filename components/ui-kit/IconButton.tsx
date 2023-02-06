@@ -6,11 +6,13 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon: ReactNode;
   width?: number;
   height?: number;
+  outlined?: boolean;
 }
 
 const IconButton = ({
   icon,
   disabled = false,
+  outlined = true,
   width = 24,
   height = 24,
   ...other
@@ -18,7 +20,11 @@ const IconButton = ({
   return (
     <button
       style={{ width: width, height: height }}
-      className={clsx(disabled && styles.disabled, styles.iconButton)}
+      className={clsx(
+        disabled && styles.disabled,
+        outlined && styles.outlined,
+        styles.iconButton
+      )}
       {...other}
     >
       {icon}

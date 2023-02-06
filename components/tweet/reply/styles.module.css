@@ -7,13 +7,5 @@
 }
 
 .content {
-  word-break: break-all;
   margin: 1.5rem 0;
-}
-
-.replying {
-  margin-top: 0.25rem;
-  color: var(--neutral-gray-300);
-  cursor: pointer;
-  font-style: italic;
 }

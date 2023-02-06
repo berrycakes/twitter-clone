@@ -4,4 +4,5 @@ export const PATH = {
   login: '/login',
   signup: '/signup',
   success: '/signup-success',
+  tweet: '/tweet/[id]',
 };

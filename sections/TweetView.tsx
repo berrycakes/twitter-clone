@@ -1,6 +1,7 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { QueryCache, useQuery } from '@tanstack/react-query';
+import { QueryCache } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { MdExitToApp } from 'react-icons/md';
 import DashboardLayout from '../components/layouts/dashboard';
 import NavigationLayout from '../components/layouts/navigation';
 import SidebarLayout from '../components/layouts/sidebar';
@@ -9,21 +10,20 @@ import People from '../components/people';
 import Tweet from '../components/tweet';
 import Button from '../components/ui-kit/Button';
 import IconButton from '../components/ui-kit/IconButton';
-import { useGetAllTweets } from '../hooks/tweet';
-import { useGetProfiles } from '../hooks/profiles';
-import useAlertStore from '../store';
-import CreateTweet from './CreateTweet';
 import { useIsDesktop, useIsMobile, useIsTablet } from '../hooks/mediaQuery';
-import { MdExitToApp } from 'react-icons/md';
+import { useGetProfiles } from '../hooks/profiles';
+import { useGetAllTweets, useReadTweet } from '../hooks/tweet';
+import useAlertStore from '../store';
 
-const Timeline = () => {
+const TweetView = ({ id }: { id: number }) => {
   const supabaseClient = useSupabaseClient();
   const user = useUser();
   const router = useRouter();
   const { addAlert } = useAlertStore();
 
-  const { data: tweets } = useGetAllTweets({});
+  useGetAllTweets({});
   const { data: profiles } = useGetProfiles();
+  const tweet = useReadTweet(id);
 
   const isMobile = useIsMobile();
   const isDesktop = useIsDesktop();
@@ -65,13 +65,7 @@ const Timeline = () => {
         </NavigationLayout>
       ) : null}
 
-      <TimelineLayout>
-        <CreateTweet />
-        {tweets?.map((tweet) => {
-          if (tweet.parent_id) return null;
-          return <Tweet key={tweet.id} tweet={tweet} />;
-        })}
-      </TimelineLayout>
+      <TimelineLayout>{tweet ? <Tweet tweet={tweet} /> : null}</TimelineLayout>
       {isTablet ? (
         <SidebarLayout>
           {profiles?.map((profile) => {
@@ -91,4 +85,4 @@ const Timeline = () => {
   );
 };
 
-export default Timeline;
+export default TweetView;

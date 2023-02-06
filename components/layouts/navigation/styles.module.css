@@ -7,6 +7,17 @@
   padding: 5rem;
 }
 
+@media screen and (max-width: 1024px) {
+  .container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    place-items: center;
+    grid-row-gap: 1.5rem;
+    padding: 5rem 1rem;
+  }
+}
+
 .iconContainer {
   display: grid;
   place-items: flex-start;

@@ -58,7 +58,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: 0.8rem;
   color: var(--neutral-gray-300);
 }
 
@@ -67,7 +67,7 @@
   display: flex;
   align-items: flex-start;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 0.8rem;
   line-height: 120%;
   column-gap: 0.25rem;
 }

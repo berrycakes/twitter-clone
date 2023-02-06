@@ -20,7 +20,11 @@ type InputAdornmentProps = {
   handleToggle: MouseEventHandler;
 };
 
-const InputAdornment = ({ type, isVisible, handleToggle }: InputAdornmentProps) => {
+const InputAdornment = ({
+  type,
+  isVisible,
+  handleToggle,
+}: InputAdornmentProps) => {
   if (type !== 'password') return null;
   return (
     <div className={styles.inputAdornment} onClick={handleToggle}>
@@ -30,7 +34,8 @@ const InputAdornment = ({ type, isVisible, handleToggle }: InputAdornmentProps) 
 };
 
 const InputField = (props: InputFieldProps) => {
-  const { value, label, placeholder, type, onChange, error, helperText } = props;
+  const { value, label, placeholder, type, onChange, error, helperText } =
+    props;
   const [isVisible, setIsVisible] = useState(false);
 
   const handleToggle = () => {
@@ -40,7 +45,10 @@ const InputField = (props: InputFieldProps) => {
   return (
     <div className={styles.root}>
       {label ? (
-        <label htmlFor="input-field" className={clsx(styles.label, error && styles.error)}>
+        <label
+          htmlFor="input-field"
+          className={clsx(styles.label, error && styles.error)}
+        >
           {label}
         </label>
       ) : null}
@@ -52,10 +60,16 @@ const InputField = (props: InputFieldProps) => {
           onChange={onChange}
           className={clsx(styles.input, error && styles.inputError)}
         />
-        <InputAdornment type={type} isVisible={isVisible} handleToggle={handleToggle} />
+        <InputAdornment
+          type={type}
+          isVisible={isVisible}
+          handleToggle={handleToggle}
+        />
       </div>
       {!!error ? (
-        <span className={clsx(styles.helperText, error && styles.error)}>{error.message}</span>
+        <span className={clsx(styles.helperText, error && styles.error)}>
+          {error.message}
+        </span>
       ) : !!helperText ? (
         <span className={clsx(styles.helperText)}>{helperText}</span>
       ) : null}

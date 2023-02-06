@@ -8,9 +8,18 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
   padding?: string | number;
 }
 
-const Card = ({ children, className, padding = '4rem 1rem', ...other }: CardProps) => {
+const Card = ({
+  children,
+  className,
+  padding = '4rem 1rem',
+  ...other
+}: CardProps) => {
   return (
-    <div style={{ padding: padding }} className={clsx(styles.card, className)} {...other}>
+    <div
+      style={{ padding: padding }}
+      className={clsx(styles.card, className)}
+      {...other}
+    >
       {children}
     </div>
   );

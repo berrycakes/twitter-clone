@@ -1,24 +1,27 @@
-import { useUser } from '@supabase/auth-helpers-react';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { MdDelete, MdEdit, MdMoreHoriz, MdPersonAddAlt1 } from 'react-icons/md';
-import { useReadTweetProfile } from '../../hooks/profiles';
+import {
+  useGetTweetProfile,
+  useReadTweetProfile,
+} from '../../../hooks/profiles';
 import {
   useDeleteTweetMutation,
-  useReadTweet,
   useReadTweetReplies,
-} from '../../hooks/tweet';
-import { PATH } from '../../routes/paths';
-import EditTweet from '../../sections/EditTweet';
-import ReplyTweet from '../../sections/ReplyTweet';
-import useAlertStore from '../../store';
-import Card from '../ui-kit/Card';
-import Modal from '../ui-kit/Modal';
-import Footer from './footer';
-import Header from './header';
+} from '../../../hooks/tweet';
+import EditTweet from '../../../sections/EditTweet';
+import ReplyTweet from '../../../sections/ReplyTweet';
+import useAlertStore from '../../../store';
+import Card from '../../ui-kit/Card';
+import Modal from '../../ui-kit/Modal';
+import Stack from '../../ui-kit/Stack';
+import Footer from '.././footer';
+import Header from '.././header';
 import styles from './styles.module.css';
 
 dayjs.extend(relativeTime);
@@ -48,28 +51,25 @@ export type Tweet = {
   parent_id?: number;
 };
 
-type TweetProps = {
+type ReplyProps = {
   tweet: Tweet;
 };
 
-const Tweet = ({ tweet }: TweetProps) => {
-  const { pathname, push, query } = useRouter();
-  const isTweetView = pathname === PATH.tweet;
+const Reply = ({ tweet }: ReplyProps) => {
+  const { push, query } = useRouter();
+  const user = useUser();
+  const qc = useQueryClient();
+  const { addAlert } = useAlertStore();
+  const supabaseClient = useSupabaseClient();
 
-  const { created_at, updated_at, content, user_id, id, parent_id } = tweet;
-
-  const profile = useReadTweetProfile(user_id as string);
-  const parentTweet = useReadTweet(parent_id);
-  const parentProfile = useReadTweetProfile(parentTweet?.user_id as string);
+  const { created_at, updated_at, content, id, user_id, parent_id } = tweet;
+  const { data: profile } = useGetTweetProfile(user_id);
   const replies = useReadTweetReplies(id);
-
   const deleteMutation = useDeleteTweetMutation(id);
 
-  const user = useUser();
-  const { addAlert } = useAlertStore();
   const [editMode, setEditMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
-  const [replyMode, setReplyMode] = useState(isTweetView);
+  const [replyMode, setReplyMode] = useState(false);
 
   const isEdited = created_at !== updated_at;
 
@@ -100,19 +100,12 @@ const Tweet = ({ tweet }: TweetProps) => {
     }
   };
 
-  const viewParent = () => {
-    push({
-      pathname: '/tweet/[id]',
-      query: { id: parent_id },
-    });
-  };
-
   const toggleDeleteMode = () => {
     setDeleteMode(!deleteMode);
   };
 
   const handleReply = () => {
-    viewReply(tweet.id);
+    viewReply(id);
   };
 
   const handleDelete = async () => {
@@ -156,43 +149,57 @@ const Tweet = ({ tweet }: TweetProps) => {
   ];
 
   return (
-    <Card className={styles.container} padding="1.5rem">
-      <Header
-        name={profile?.username || 'unknownUser'}
-        displayName={profile?.display_name || 'Unknown user'}
-        date={displayDate()}
-        isEdited={isEdited}
-        createMode={false}
-        dropdownItems={user_id === user?.id ? selfMenuItems : otherMenuItems}
-        dropdownIcon={
-          user_id === user?.id ? <MdMoreHoriz /> : <MdPersonAddAlt1 />
-        }
-      />
-      {isTweetView && parent_id ? (
-        <p className={styles.replying} onClick={() => viewParent()}>
-          {`Replying to @${parentProfile?.username}`}
-        </p>
-      ) : null}
-      {editMode ? (
-        <EditTweet tweet={tweet} toggleEditMode={toggleEditMode} />
-      ) : (
-        <div className={styles.content}>{content}</div>
-      )}
-      <Footer handleReply={handleReply} replyStats={replies?.length || 0} />
-      {replyMode ? (
-        <ReplyTweet tweet={tweet} toggleReplyMode={toggleReplyMode} />
-      ) : null}
+    <>
+      <Stack divider margin="1rem 0" />
 
-      <Modal
-        actionLabel="Delete"
-        header="Confirm"
-        content="Are you sure you want to delete this tweet?"
-        action={handleDelete}
-        isOpen={deleteMode}
-        setIsOpen={setDeleteMode}
-      />
-    </Card>
+      <Card className={styles.container} padding="1rem">
+        <Header
+          name={profile?.username || 'unknownUser'}
+          displayName={profile?.display_name || 'Unknown user'}
+          date={displayDate()}
+          isEdited={isEdited}
+          createMode={false}
+          dropdownItems={user_id === user?.id ? selfMenuItems : otherMenuItems}
+          dropdownIcon={
+            user_id === user?.id ? <MdMoreHoriz /> : <MdPersonAddAlt1 />
+          }
+        />
+        {editMode ? (
+          <EditTweet tweet={tweet} toggleEditMode={toggleEditMode} />
+        ) : (
+          <div className={styles.content}>{content}</div>
+        )}
+        <Footer handleReply={handleReply} replyStats={replies?.length || 0} />
+        {/* {replyMode ? (
+          <ReplyTweet
+            tweet={tweet}
+            toggleReplyMode={toggleReplyMode}
+            // replies={replies}
+          />
+        ) : null} */}
+        <Modal
+          actionLabel="Delete"
+          header="Confirm"
+          content="Are you sure you want to delete this tweet?"
+          action={handleDelete}
+          isOpen={deleteMode}
+          setIsOpen={setDeleteMode}
+        />
+      </Card>
+    </>
   );
 };
 
-export default Tweet;
+export default Reply;
+
+// Tweets
+// -id: int
+// -user_id: uuid
+// -content: text
+// -created_at: timestamp with time zone
+// -parent_id: int
+// Profiles
+// -id: uuid
+// -username: text
+// -display_name: text
+// -password: text

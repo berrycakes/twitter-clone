@@ -1,13 +1,11 @@
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { useQueryClient } from '@tanstack/react-query';
-import React from 'react';
+import { useUser } from '@supabase/auth-helpers-react';
 import { useForm } from 'react-hook-form';
 import ControlledTextArea from '../components/form/ControlledTextArea';
 import FormProvider from '../components/form/FormProvider';
 import Header from '../components/tweet/header';
 import TweetButtonGroup from '../components/tweet/tweet-button-group';
-import Button from '../components/ui-kit/Button';
 import Card from '../components/ui-kit/Card';
+import { useCreateTweetMutation } from '../hooks/tweet';
 import useAlertStore from '../store';
 
 type FormFields = {
@@ -16,9 +14,8 @@ type FormFields = {
 
 const CreateTweet = () => {
   const user = useUser();
-  const supabaseClient = useSupabaseClient();
+  const createMutation = useCreateTweetMutation();
   const { addAlert } = useAlertStore();
-  const qc = useQueryClient();
   const methods = useForm<FormFields>({
     mode: 'onChange',
     defaultValues: {
@@ -33,19 +30,15 @@ const CreateTweet = () => {
   } = methods;
 
   const onSubmit = async (data: FormFields) => {
+    if (!user) return null;
     const payload = {
       content: data.content,
-      user_id: user?.id,
+      user_id: user.id,
     };
-    const { data: res, error } = await supabaseClient
-      .from('tweets')
-      .insert(payload)
-      .select();
-    if (res) {
+    try {
+      createMutation.mutate(payload);
       reset();
-      qc.invalidateQueries(['tweets']);
-    }
-    if (error) {
+    } catch (error: any) {
       addAlert({
         message: error.message,
         type: 'error',
@@ -67,7 +60,9 @@ const CreateTweet = () => {
           }}
         />
         <TweetButtonGroup
-          tweetButtonProps={{ disabled: !isValid || !watch('content') }}
+          tweetButtonProps={{
+            disabled: !isValid || !watch('content') || isSubmitting,
+          }}
         />
       </FormProvider>
     </Card>
