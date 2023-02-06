@@ -28,6 +28,7 @@ const CreateTweet = () => {
   const {
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isValid, isSubmitting },
   } = methods;
 
@@ -36,7 +37,10 @@ const CreateTweet = () => {
       content: data.content,
       user_id: user?.id,
     };
-    const { data: res, error } = await supabaseClient.from('tweets').insert(payload).select();
+    const { data: res, error } = await supabaseClient
+      .from('tweets')
+      .insert(payload)
+      .select();
     if (res) {
       reset();
       qc.invalidateQueries(['tweets']);
@@ -51,17 +55,20 @@ const CreateTweet = () => {
 
   return (
     <Card padding="1.5rem">
-      <Header name={user?.user_metadata?.display_name} createMode />
+      <Header displayName={user?.user_metadata?.display_name} createMode />
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <ControlledTextArea
           type="create"
           name="content"
           placeholder="What's happening?"
           rules={{
+            required: { value: true, message: 'Content is required' },
             maxLength: { value: 225, message: 'Exceeded maximum length' },
           }}
         />
-        <TweetButtonGroup />
+        <TweetButtonGroup
+          tweetButtonProps={{ disabled: !isValid || !watch('content') }}
+        />
       </FormProvider>
     </Card>
   );

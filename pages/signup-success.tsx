@@ -25,11 +25,17 @@ const SignUpSuccess = () => {
       </Head>
       <main className={styles.main}>
         <Card className={styles.signUpSuccess}>
-          <Image src="/success.png" alt="Picture of the author" width={156} height={203} />
+          <Image
+            src="/success.png"
+            alt="Picture of the author"
+            width={156}
+            height={203}
+          />
           <div>
             <h4>Welcome aboard! Your account has been created!</h4>
             <p>
-              You can now login to your account to start enjoying the benefits of using Advance!
+              Confirm your email to start enjoying the benefits of using Twitter
+              Clone!
             </p>
           </div>
           <ButtonContainer marginTop={false}>

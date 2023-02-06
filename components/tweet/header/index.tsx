@@ -4,18 +4,24 @@ import IconButton from '../../ui-kit/IconButton';
 import styles from './styles.module.css';
 
 type HeaderProps = {
-  name: string;
+  name?: string;
+  displayName: string;
   date?: string;
   createMode: boolean;
 };
 
-const Header = ({ name, date, createMode = false }: HeaderProps) => {
+const Header = ({
+  name,
+  date,
+  displayName,
+  createMode = false,
+}: HeaderProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.imageContainer}>
         <Image src="/success.png" alt="placeholder" width={40} height={40} />
       </div>
-      <div className={styles.nameContainer}>{name}</div>
+      <div className={styles.nameContainer}>{displayName}</div>
       {createMode ? (
         <div className={styles.dropdownContainer}>
           <p>Everyone</p>
@@ -25,7 +31,11 @@ const Header = ({ name, date, createMode = false }: HeaderProps) => {
         </div>
       ) : (
         <>
-          <div className={styles.dateContainer}>{date}</div>
+          <div className={styles.dateContainer}>
+            <div>{name}</div>
+            <p>•</p>
+            <div>{date}</div>
+          </div>
           <div className={styles.menuContainer}>
             <IconButton icon={<MdMoreHoriz size={20} />} />
           </div>
