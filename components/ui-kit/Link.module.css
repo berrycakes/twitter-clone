@@ -1,0 +1,12 @@
+.link {
+   
+    text-decoration: none;
+}
+
+.primary {
+    color: var(--primary-mint-500);
+}
+
+.accent {
+    color: var(--accent-purple-base);
+}

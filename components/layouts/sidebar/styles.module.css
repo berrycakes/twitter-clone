@@ -1,0 +1,17 @@
+.container {
+  padding: 1rem;
+  width: 100%;
+}
+
+.container h6 {
+  margin: 0.5rem 0;
+}
+
+.card {
+  width: 282px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  place-items: flex-start;
+  grid-row-gap: 1.5rem;
+}

@@ -1,76 +1,83 @@
 :root {
-  --max-width: 1100px;
+  /* spacing */
+  --max-width: 1440px;
   --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-
-  --primary-glow: conic-gradient(
-    from 180deg at 50% 50%,
-    #16abff33 0deg,
-    #0885ff33 55deg,
-    #54d6ff33 120deg,
-    #0071ff33 160deg,
-    transparent 360deg
-  );
-  --secondary-glow: radial-gradient(
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0)
-  );
-
-  --tile-start-rgb: 239, 245, 249;
-  --tile-end-rgb: 228, 232, 233;
-  --tile-border: conic-gradient(
-    #00000080,
-    #00000040,
-    #00000030,
-    #00000020,
-    #00000010,
-    #00000010,
-    #00000080
-  );
-
-  --callout-rgb: 238, 240, 241;
-  --callout-border-rgb: 172, 175, 176;
-  --card-rgb: 180, 185, 188;
-  --card-border-rgb: 131, 134, 135;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-
-    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
-    --secondary-glow: linear-gradient(
-      to bottom right,
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0.3)
-    );
-
-    --tile-start-rgb: 2, 13, 46;
-    --tile-end-rgb: 2, 5, 19;
-    --tile-border: conic-gradient(
-      #ffffff80,
-      #ffffff40,
-      #ffffff30,
-      #ffffff20,
-      #ffffff10,
-      #ffffff10,
-      #ffffff80
-    );
-
-    --callout-rgb: 20, 20, 20;
-    --callout-border-rgb: 108, 108, 108;
-    --card-rgb: 100, 100, 100;
-    --card-border-rgb: 200, 200, 200;
-  }
+  --button-border-radius: 100px;
+  /* colors */
+  --accent-purple-10: #f8f7fc;
+  --accent-purple-100: #ddd9f2;
+  --accent-purple-200: #cbc6eb;
+  --accent-purple-300: #9b91d9;
+  --accent-purple-base: #796bcc;
+  --accent-purple-50: #eeecf8;
+  --accent-purple-500: #5745bf;
+  --accent-purple-600: #44369b;
+  --neutral-gray-100: #b6c4ce;
+  --neutral-gray-200: #97abba;
+  --neutral-gray-300: #7892a5;
+  --neutral-gray-400: #5f7a8e;
+  --neutral-gray-500: #3d4f5c;
+  --neutral-gray-600: #29353d;
+  --neutral-light-gray-100: #f9fafb;
+  --neutral-light-gray-200: #f3f5f7;
+  --neutral-light-gray-300: #e3e9ed;
+  --neutral-light-gray-400: #d4dce2;
+  --neutral-light-gray-500: #c5d0d8;
+  --neutral-white: #ffffff;
+  --primary-blue-10: #f5fbff;
+  --primary-blue-100: #b8e1ff;
+  --primary-blue-200: #85cbff;
+  --primary-blue-300: #1f9fff;
+  --primary-blue-base: #0088ed;
+  --primary-blue-50: #e5f4ff;
+  --primary-blue-500: #0069b8;
+  --primary-blue-600: #004c85;
+  --secondary-indigo-10: #f6f8fe;
+  --secondary-indigo-100: #dce2fa;
+  --secondary-indigo-200: #c5d0f6;
+  --secondary-indigo-300: #99acf0;
+  --secondary-indigo-base: #3f63e2;
+  --secondary-indigo-50: #e9edfc;
+  --secondary-indigo-500: #1f46d0;
+  --secondary-indigo-600: #1937a4;
+  --primary-mint-10: #f7fdfb;
+  --primary-mint-100: #a6e7d5;
+  --primary-mint-200: #92e2cc;
+  --primary-mint-300: #7eddc2;
+  --primary-mint-base: #34c39b;
+  --primary-mint-50: #e3f7f2;
+  --primary-mint-500: #29997a;
+  --primary-mint-600: #1e715a;
+  --success-10: #f5fef8;
+  --success-100: #a8fabf;
+  --success-200: #47f578;
+  --success-300: #0bcb41;
+  --success-base: #00bb34;
+  --success-50: #ddfde6;
+  --success-500: #008a27;
+  --success-600: #005718;
+  --error-10: #fff5f7;
+  --error-100: #ffbdc8;
+  --error-200: #ff5774;
+  --error-base: #bb0020;
+  --error-50: #ffdbe1;
+  --error-500: #8a0018;
+  --error-600: #57000f;
+  --warning-10: #fffcf5;
+  --warning-100: #ffe6b3;
+  --warning-200: #ffd480;
+  --warning-300: #f5c73d;
+  --warning-base: #bbcc00;
+  --warning-50: #fff6e5;
+  --warning-500: #cc9900;
+  --warning-600: #b26800;
+  --black: #333333;
+  --gray: #62748c;
+  --white: #f2f2f2;
+  --red: #d60025;
+  --offwhite: #d9d9d9;
+  --background: #f5f5f5;
+  --icon-dark: #323232;
 }
 
 * {
@@ -79,20 +86,19 @@
   margin: 0;
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+html * {
+  font-size: 16px;
+  font-style: normal;
+  font-family: Larsseit !important;
+  line-height: 160%;
 }
 
+html,
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  max-width: var(--max-width);
+  background-color: var(--background);
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 a {
@@ -100,8 +106,38 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+h4 {
+  font-weight: 500;
+  font-size: 31px;
+  line-height: 120%;
+}
+
+h6 {
+  font-family: 'Larsseit';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 150%;
+}
+
+@font-face {
+  font-family: 'Larsseit';
+  src: url('../fonts/larsseit/Larsseit.otf');
+  font-weight: 400;
+  font-style: normal;
+  line-height: 160%;
+}
+
+@font-face {
+  font-family: 'Larsseit';
+  src: url('../fonts/larsseit/Larsseit-Bold.otf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Larsseit';
+  src: url('../fonts/larsseit/Larsseit-Italic.otf');
+  font-weight: normal;
+  font-style: italic;
 }

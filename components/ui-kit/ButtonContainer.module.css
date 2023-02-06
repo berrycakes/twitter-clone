@@ -1,0 +1,11 @@
+.buttonContainer {
+    display: grid;
+    place-items: center;
+    grid-template-columns: 1;
+    grid-gap: 1rem;
+    width: 100%;
+}
+
+.marginTop {
+    margin: 4rem 0 0 0;
+}

@@ -1,0 +1,33 @@
+.button {
+    height: 40px;
+    padding: 0.5rem 1rem;
+    border-radius: var(--button-border-radius);
+    border: none;
+    outline: none;
+    font-family: 'Larsseit';
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 160%;
+    color: var(--neutral-white);
+    cursor: pointer;
+}
+
+.button:focus {
+    outline: none;
+}
+
+.primary {
+    background-color: var(--primary-mint-base);
+}
+
+.secondary {
+    background-color: var(--secondary-indigo-base);
+}
+
+.disabled {
+    opacity: 0.4;
+}
+
+.fullWidth {
+    width: 100%;
+}

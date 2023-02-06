@@ -1,0 +1,43 @@
+.alert {
+  position: relative;
+  width: 100%;
+  margin: 0.25rem;
+  padding: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}
+.error {
+  color: var(--error-600);
+  background-color: var(--error-50);
+  border-color: var(--error-100);
+}
+
+.success {
+  color: var(--primary-mint-600);
+  background-color: var(--primary-mint-50);
+  border-color: var(--primary-mint-100);
+}
+
+.warning {
+  color: var(--warning-600);
+  background-color: var(--warning-50);
+  border-color: var(--warning-100);
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+.hide {
+  display: none;
+}
