@@ -81,7 +81,7 @@ const ReplyTweet = ({ tweet, toggleReplyMode }: ReplyTweetProps) => {
             <Button
               type="submit"
               disabled={!isValid || !watch('content') || isSubmitting}
-              fullWidth={isMobile}
+              fullWidth={!!isMobile}
             >
               Reply
             </Button>
