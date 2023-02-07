@@ -12,13 +12,9 @@ import Button from '../components/ui-kit/Button';
 import IconButton from '../components/ui-kit/IconButton';
 import Spinner from '../components/ui-kit/Spinner';
 import Unavailable from '../components/unavailable';
-import { useIsDesktop, useIsMobile, useIsTablet } from '../hooks/mediaQuery';
+import { useIsTablet } from '../hooks/mediaQuery';
 import { useGetProfiles, useReadIdFromUsername } from '../hooks/profiles';
-import {
-  useGetAllTweets,
-  useReadProfileTweets,
-  useReadTweet,
-} from '../hooks/tweet';
+import { useGetAllTweets, useReadProfileTweets } from '../hooks/tweet';
 import useAlertStore from '../store';
 
 const ProfileView = ({ username }: { username: string }) => {
@@ -31,9 +27,6 @@ const ProfileView = ({ username }: { username: string }) => {
   const { data: profiles } = useGetProfiles();
   const userId = useReadIdFromUsername(decodeURI(username));
   const profileTweets = useReadProfileTweets(userId as string);
-
-  const isMobile = useIsMobile();
-  const isDesktop = useIsDesktop();
   const isTablet = useIsTablet();
 
   const handleSignOut = async () => {
