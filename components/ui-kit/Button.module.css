@@ -43,3 +43,10 @@
 .normalWidth {
   width: 200px;
 }
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}

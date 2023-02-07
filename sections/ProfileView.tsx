@@ -10,6 +10,7 @@ import People from '../components/people';
 import Tweet from '../components/tweet';
 import Button from '../components/ui-kit/Button';
 import IconButton from '../components/ui-kit/IconButton';
+import Spinner from '../components/ui-kit/Spinner';
 import Unavailable from '../components/unavailable';
 import { useIsDesktop, useIsMobile, useIsTablet } from '../hooks/mediaQuery';
 import { useGetProfiles, useReadIdFromUsername } from '../hooks/profiles';
@@ -26,7 +27,7 @@ const ProfileView = ({ username }: { username: string }) => {
   const router = useRouter();
   const { addAlert } = useAlertStore();
 
-  const { data: tweets } = useGetAllTweets({});
+  const { data: tweets, isLoading } = useGetAllTweets({});
   const { data: profiles } = useGetProfiles();
   const userId = useReadIdFromUsername(decodeURI(username));
   const profileTweets = useReadProfileTweets(userId as string);
@@ -70,12 +71,14 @@ const ProfileView = ({ username }: { username: string }) => {
       </NavigationLayout>
 
       <TimelineLayout>
-        {profileTweets && profileTweets.length ? (
+        {isLoading ? (
+          <Spinner type="dots" />
+        ) : profileTweets && profileTweets.length ? (
           profileTweets?.map((tweet) => {
             return <Tweet key={tweet.id} tweet={tweet} />;
           })
         ) : (
-          <Unavailable />
+          <Unavailable message={`${username} has no tweets.`} />
         )}
       </TimelineLayout>
       {!isTablet ? (

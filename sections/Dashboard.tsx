@@ -10,6 +10,7 @@ import People from '../components/people';
 import Tweet from '../components/tweet';
 import Button from '../components/ui-kit/Button';
 import IconButton from '../components/ui-kit/IconButton';
+import Spinner from '../components/ui-kit/Spinner';
 import { useIsTablet } from '../hooks/mediaQuery';
 import { useGetProfiles } from '../hooks/profiles';
 import { useGetAllTweets } from '../hooks/tweet';
@@ -22,8 +23,8 @@ const Timeline = () => {
   const router = useRouter();
   const { addAlert } = useAlertStore();
 
-  const { data: tweets } = useGetAllTweets({});
-  const { data: profiles } = useGetProfiles();
+  const { data: tweets, isLoading: tweetsLoading } = useGetAllTweets({});
+  const { data: profiles, isLoading: profilesLoading } = useGetProfiles();
   const isTablet = useIsTablet();
 
   const handleSignOut = async () => {
@@ -62,10 +63,15 @@ const Timeline = () => {
 
       <TimelineLayout>
         <CreateTweet />
-        {tweets?.map((tweet) => {
-          if (tweet.parent_id) return null;
-          return <Tweet key={tweet.id} tweet={tweet} />;
-        })}
+        {profilesLoading || tweetsLoading ? (
+          <Spinner type="dots" />
+        ) : (
+          tweets?.length &&
+          tweets?.map((tweet) => {
+            if (tweet.parent_id) return null;
+            return <Tweet key={tweet.id} tweet={tweet} />;
+          })
+        )}
       </TimelineLayout>
       {!isTablet ? (
         <SidebarLayout>

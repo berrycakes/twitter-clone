@@ -1,6 +1,7 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { QueryCache } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { MdExitToApp } from 'react-icons/md';
 import DashboardLayout from '../components/layouts/dashboard';
 import NavigationLayout from '../components/layouts/navigation';
@@ -10,6 +11,7 @@ import People from '../components/people';
 import Tweet from '../components/tweet';
 import Button from '../components/ui-kit/Button';
 import IconButton from '../components/ui-kit/IconButton';
+import Spinner from '../components/ui-kit/Spinner';
 import Unavailable from '../components/unavailable';
 import { useIsDesktop, useIsMobile, useIsTablet } from '../hooks/mediaQuery';
 import { useGetProfiles } from '../hooks/profiles';
@@ -23,21 +25,20 @@ const TweetView = ({ id }: { id: number }) => {
   const { addAlert } = useAlertStore();
 
   useGetAllTweets({});
-  const { data: profiles } = useGetProfiles();
+  const { data: profiles, isLoading } = useGetProfiles();
   const tweet = useReadTweet(id);
-
-  const isMobile = useIsMobile();
-  const isDesktop = useIsDesktop();
   const isTablet = useIsTablet();
+  const [loading, setLoading] = useState(false);
 
   const handleSignOut = async () => {
+    setLoading(true);
     const { error } = await supabaseClient.auth.signOut();
-
     if (error) {
       addAlert({
         message: error.message || 'Error signing out',
         type: 'error',
       });
+      setLoading(false);
     } else {
       const queryCache = new QueryCache();
       queryCache.clear();
@@ -46,6 +47,7 @@ const TweetView = ({ id }: { id: number }) => {
         type: 'success',
       });
       router.push('/');
+      setLoading(false);
     }
   };
 
@@ -65,7 +67,13 @@ const TweetView = ({ id }: { id: number }) => {
       </NavigationLayout>
 
       <TimelineLayout>
-        {tweet ? <Tweet tweet={tweet} /> : <Unavailable />}
+        {isLoading ? (
+          <Spinner type="dots" />
+        ) : tweet ? (
+          <Tweet tweet={tweet} />
+        ) : (
+          <Unavailable />
+        )}
       </TimelineLayout>
       {!isTablet ? (
         <SidebarLayout>

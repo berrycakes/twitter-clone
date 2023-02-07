@@ -46,8 +46,13 @@ const AuthLogin = () => {
       password: data.password,
     });
     if (error) {
-      setError('email', { type: 'custom', message: error.message });
-      setError('password', { type: 'custom', message: error.message });
+      if (error.message.includes('Email')) {
+        setError('email', { type: 'custom', message: error.message });
+      } else {
+        setError('email', { type: 'custom', message: error.message });
+        setError('password', { type: 'custom', message: error.message });
+      }
+
       addAlert({
         message: error.message,
         type: 'error',
@@ -82,7 +87,12 @@ const AuthLogin = () => {
         rules={VALIDATIONS.password}
       />
       <ButtonContainer>
-        <Button type="submit" disabled={isSubmitting || !isValid}>
+        <Button
+          type="submit"
+          disabled={isSubmitting || !isValid}
+          loading={isSubmitting}
+          fullWidth
+        >
           Next
         </Button>
         <Link href={'/'}>Forgot Password</Link>

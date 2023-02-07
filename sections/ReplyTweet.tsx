@@ -26,6 +26,7 @@ const ReplyTweet = ({ tweet, toggleReplyMode }: ReplyTweetProps) => {
   const replies = useReadTweetReplies(tweet.id);
   const replyMutation = useReplyTweetMutation();
   const [replyForm, setReplyForm] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const methods = useForm<FormFields>({
     mode: 'onChange',
@@ -47,6 +48,7 @@ const ReplyTweet = ({ tweet, toggleReplyMode }: ReplyTweetProps) => {
 
   const onSubmit = async (data: FormFields) => {
     if (!user) return null;
+    setLoading(true);
     const payload = {
       user_id: user.id,
       content: data.content,
@@ -60,6 +62,8 @@ const ReplyTweet = ({ tweet, toggleReplyMode }: ReplyTweetProps) => {
         message: error.message,
         type: 'error',
       });
+    } finally {
+      setLoading(false);
     }
   };
   const isMobile = useIsMobile();
@@ -80,7 +84,8 @@ const ReplyTweet = ({ tweet, toggleReplyMode }: ReplyTweetProps) => {
           <Stack justify={isMobile ? 'center' : 'flex-end'} row padding={16}>
             <Button
               type="submit"
-              disabled={!isValid || !watch('content') || isSubmitting}
+              loading={isSubmitting || loading}
+              disabled={!isValid || !watch('content') || loading}
               fullWidth={!!isMobile}
             >
               Reply

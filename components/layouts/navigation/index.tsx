@@ -145,7 +145,7 @@ const NavigationLayout = ({
             icon={<MdList size={size} />}
           />
           <NavItem
-            title="Profile"
+            title="Edit Profile"
             displayLabel={condensed}
             icon={<MdPerson size={size} />}
           />
