@@ -26,11 +26,11 @@ const Header = ({
   profile,
   displayName,
 }: HeaderProps) => {
-  const isMobile = useIsMobile();
-  const { push } = useRouter();
+  const { push, query } = useRouter();
 
   const viewProfile = () => {
     if (!profile?.username) return null;
+    if (query.username === profile?.username) return null;
     push({
       pathname: '/profile/[username]',
       query: { username: profile.username },
