@@ -6,4 +6,5 @@ export const PATH = {
   success: '/signup-success',
   tweet: '/tweet/[id]',
   profile: '/profile/[username]',
+  editProfile: '/edit-profile',
 };
