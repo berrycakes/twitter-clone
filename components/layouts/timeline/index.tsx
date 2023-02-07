@@ -19,7 +19,13 @@ const TimelineLayout = ({ children }: TimelineLayoutProps) => {
       {!isMobile ? (
         <>
           <Breadcrumbs />
-          <h6>{title === 'dashboard' ? 'Home' : startCase(title)}</h6>
+          <h6>
+            {title === 'dashboard'
+              ? 'Home'
+              : title === 'editProfile'
+              ? 'Edit Profile'
+              : startCase(title)}
+          </h6>
         </>
       ) : null}
       {children}

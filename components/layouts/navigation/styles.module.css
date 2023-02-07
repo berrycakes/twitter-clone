@@ -89,4 +89,7 @@
     grid-area: 1 / 1 / 2 / 2;
     z-index: 20;
   }
+  .breadcrumbs {
+    margin-left: 1rem;
+  }
 }

@@ -6,7 +6,7 @@ import { PATH } from '../../routes/paths';
 import styles from './styles.module.css';
 
 const Breadcrumbs = () => {
-  const { pathname, push } = useRouter();
+  const { pathname, push, query } = useRouter();
   const title = getKeyByValue(PATH, pathname);
 
   const handleClickHome = () => {
@@ -25,7 +25,13 @@ const Breadcrumbs = () => {
       <div className={styles.iconContainer}>
         <MdChevronRight size={20} />
       </div>
-      <p>{startCase(title)}</p>
+      <p>
+        {title === 'editProfile'
+          ? 'Edit Profile'
+          : title === 'profile'
+          ? `${decodeURI(query.username as string)}'s Profile`
+          : startCase(title)}
+      </p>
     </div>
   );
 };

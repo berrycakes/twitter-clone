@@ -16,6 +16,7 @@ import {
 import { useOnClickOutside } from 'usehooks-ts';
 import { useIsMobile } from '../../../hooks/mediaQuery';
 import { PATH } from '../../../routes/paths';
+import Breadcrumbs from '../../breadcrumbs';
 import IconButton from '../../ui-kit/IconButton';
 import styles from './styles.module.css';
 
@@ -77,6 +78,14 @@ const NavigationLayout = ({
     }
   };
 
+  const handleClickEditProfile = () => {
+    if (pathname === PATH.editProfile) {
+      return;
+    } else {
+      push(PATH.editProfile);
+    }
+  };
+
   useEffect(() => {
     if (isMobile) {
       setIsVisible(false);
@@ -95,6 +104,9 @@ const NavigationLayout = ({
           outlined={false}
           icon={<MdMenu size={30} />}
         />
+        <div className={styles.breadcrumbs}>
+          <Breadcrumbs />
+        </div>
       </div>
     );
   }
@@ -116,7 +128,7 @@ const NavigationLayout = ({
             selected
             title="Home"
             displayLabel={condensed}
-            icon={<MdHome size={size} onClick={handleClickHome} />}
+            icon={<MdHome size={size} />}
             onClick={handleClickHome}
           />
           <NavItem
@@ -145,8 +157,10 @@ const NavigationLayout = ({
             icon={<MdList size={size} />}
           />
           <NavItem
+            selected
             title="Edit Profile"
             displayLabel={condensed}
+            onClick={handleClickEditProfile}
             icon={<MdPerson size={size} />}
           />
           <NavItem
