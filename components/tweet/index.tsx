@@ -1,11 +1,22 @@
-import { useUser } from '@supabase/auth-helpers-react';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { MdDelete, MdEdit, MdMoreHoriz, MdPersonAddAlt1 } from 'react-icons/md';
-import { useReadTweetProfile } from '../../hooks/profiles';
+import {
+  MdDelete,
+  MdEdit,
+  MdMoreHoriz,
+  MdPersonAddAlt1,
+  MdPersonRemoveAlt1,
+} from 'react-icons/md';
+import { removeElement } from '../../helper/functions';
+import {
+  useGetFollowing,
+  useReadTweetProfile,
+  useToggleFollowMutation,
+} from '../../hooks/profiles';
 import {
   useDeleteTweetMutation,
   useReadTweet,
@@ -65,8 +76,13 @@ const Tweet = ({ tweet }: TweetProps) => {
   const replies = useReadTweetReplies(id);
 
   const deleteMutation = useDeleteTweetMutation(id);
+  const toggleFollowMutation = useToggleFollowMutation();
 
   const user = useUser();
+  const { data: followingList, isRefetching } = useGetFollowing(
+    user?.id as string
+  );
+  const supabaseClient = useSupabaseClient();
   const { addAlert } = useAlertStore();
   const [editMode, setEditMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
@@ -128,6 +144,18 @@ const Tweet = ({ tweet }: TweetProps) => {
     }
   };
 
+  const handleFollow = async () => {
+    try {
+      toggleFollowMutation.mutate({
+        userId: user?.id as string,
+        tweetUserId: tweet.user_id,
+        followingList: followingList,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const selfMenuItems = [
     {
       label: 'Edit',
@@ -148,10 +176,14 @@ const Tweet = ({ tweet }: TweetProps) => {
 
   const otherMenuItems = [
     {
-      label: 'Follow',
-      icon: <MdPersonAddAlt1 />,
+      label: followingList?.includes(tweet.user_id) ? 'Unfollow' : 'Follow',
+      icon: followingList?.includes(tweet.user_id) ? (
+        <MdPersonRemoveAlt1 />
+      ) : (
+        <MdPersonAddAlt1 />
+      ),
       onClick: () => {
-        toggleDeleteMode();
+        handleFollow();
       },
     },
   ];
@@ -165,7 +197,13 @@ const Tweet = ({ tweet }: TweetProps) => {
         createMode={false}
         dropdownItems={user_id === user?.id ? selfMenuItems : otherMenuItems}
         dropdownIcon={
-          user_id === user?.id ? <MdMoreHoriz /> : <MdPersonAddAlt1 />
+          user_id === user?.id ? (
+            <MdMoreHoriz />
+          ) : followingList?.includes(tweet.user_id) ? (
+            <MdPersonRemoveAlt1 />
+          ) : (
+            <MdPersonAddAlt1 />
+          )
         }
       />
       {isTweetView && parent_id ? (

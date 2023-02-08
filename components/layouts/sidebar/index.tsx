@@ -1,17 +1,40 @@
-import { ReactNode } from 'react';
+import { useUser } from '@supabase/auth-helpers-react';
+import { ReactNode, useEffect } from 'react';
+import { useGetFollowing, useGetProfiles } from '../../../hooks/profiles';
+import People from '../../people';
 import Card from '../../ui-kit/Card';
+import Spinner from '../../ui-kit/Spinner';
 import styles from './styles.module.css';
 
-type SidebarLayoutProps = {
-  children: ReactNode;
-};
+const SidebarLayout = () => {
+  const user = useUser();
+  const { data: profiles, isLoading: profilesLoading } = useGetProfiles();
+  const { data: followingList, isRefetching } = useGetFollowing(
+    user?.id as string
+  );
 
-const SidebarLayout = ({ children }: SidebarLayoutProps) => {
   return (
     <div className={styles.container}>
       <Card padding="1rem" className={styles.card}>
         <h6>Who to follow</h6>
-        {children}
+        {profilesLoading ? (
+          <Spinner type="dots" />
+        ) : (
+          profiles?.length &&
+          profiles?.map((profile) => {
+            if (!profile.display_name || !profile.username) return null;
+            if (profile.username === user?.user_metadata?.username) return null;
+            if (profile.id && followingList?.includes(profile.id)) return null;
+            return (
+              <People
+                key={profile.id}
+                id={profile.id}
+                name={profile.display_name}
+                username={profile.username}
+              />
+            );
+          })
+        )}
       </Card>
     </div>
   );

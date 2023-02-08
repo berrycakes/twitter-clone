@@ -6,7 +6,6 @@ import DashboardLayout from '../components/layouts/dashboard';
 import NavigationLayout from '../components/layouts/navigation';
 import SidebarLayout from '../components/layouts/sidebar';
 import TimelineLayout from '../components/layouts/timeline';
-import People from '../components/people';
 import Tweet from '../components/tweet';
 import Button from '../components/ui-kit/Button';
 import IconButton from '../components/ui-kit/IconButton';
@@ -73,21 +72,7 @@ const Timeline = () => {
           })
         )}
       </TimelineLayout>
-      {!isTablet ? (
-        <SidebarLayout>
-          {profiles?.map((profile) => {
-            if (!profile.display_name || !profile.username) return null;
-            if (profile.username === user?.user_metadata?.username) return null;
-            return (
-              <People
-                key={profile.id}
-                name={profile.display_name}
-                username={profile.username}
-              />
-            );
-          })}
-        </SidebarLayout>
-      ) : null}
+      {!isTablet ? <SidebarLayout /> : null}
     </DashboardLayout>
   );
 };
