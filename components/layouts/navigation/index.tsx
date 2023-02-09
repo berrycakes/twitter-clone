@@ -114,7 +114,7 @@ const NavigationLayout = ({
   return (
     <div
       className={clsx(styles.container, !isVisible && styles.notVisible)}
-      ref={ref}
+      ref={isMobile ? ref : null}
     >
       <div className={styles.sticky}>
         <div className={styles.buttonContainer}>
