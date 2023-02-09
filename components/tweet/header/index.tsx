@@ -54,11 +54,11 @@ const Header = ({
       ) : (
         <>
           <div className={styles.dateContainer}>
-            <div className={styles.nameContainer} onClick={viewProfile}>
+            <div className={styles.usernameContainer} onClick={viewProfile}>
               {profile?.username || 'unknownUser'}
             </div>
             <p>•</p>
-            <div>{date}</div>
+            <div className={styles.date}>{date}</div>
             {isEdited ? <div className={styles.edited}>edited</div> : null}
           </div>
           <div className={styles.menuContainer}>

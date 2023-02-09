@@ -1,5 +1,4 @@
 import { useUser } from '@supabase/auth-helpers-react';
-import { ReactNode, useEffect } from 'react';
 import { useGetFollowing, useGetProfiles } from '../../../hooks/profiles';
 import People from '../../people';
 import Card from '../../ui-kit/Card';
