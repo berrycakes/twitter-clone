@@ -68,12 +68,12 @@
   color: var(--neutral-gray-400);
 }
 .date {
-  flex-grow: 1;
+  min-width: min-content;
   white-space: nowrap;
 }
 
 .edited {
-  flex-grow: 1;
+  min-width: min-content;
   color: var(--neutral-gray-200);
   font-style: italic;
 }
