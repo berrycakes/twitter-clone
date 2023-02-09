@@ -1,21 +1,19 @@
 .container {
+  padding: 4rem 1rem;
+  height: 100vh;
+  min-width: 218px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.buttonContainer {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
   place-items: center;
   grid-row-gap: 1.5rem;
-  padding: 5rem;
-}
-
-@media screen and (max-width: 1024px) {
-  .container {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    place-items: center;
-    grid-row-gap: 1.5rem;
-    padding: 5rem 1rem;
-  }
 }
 
 .iconContainer {
@@ -43,4 +41,55 @@
   display: flex;
   flex-direction: row;
   column-gap: 0.25rem;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1168px) {
+  .container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    place-items: flex-start center;
+    grid-row-gap: 1.5rem;
+    padding: 4rem 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    place-items: center;
+    grid-row-gap: 1.5rem;
+    background-color: var(--primary-blue-10);
+    margin-left: 0;
+    min-width: 80px;
+  }
+  .notVisible {
+    display: none;
+  }
+
+  .floatingIcon {
+    position: fixed;
+    background-color: var(--background);
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    grid-area: 1 / 1 / 2 / 2;
+    z-index: 20;
+  }
+  .breadcrumbs {
+    margin-left: 1rem;
+  }
 }

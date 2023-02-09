@@ -47,7 +47,7 @@ const CreateTweet = () => {
   };
 
   return (
-    <Card padding="1.5rem">
+    <Card padding="1.5rem" fullWidth>
       <Header displayName={user?.user_metadata?.display_name} createMode />
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <ControlledTextArea

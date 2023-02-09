@@ -8,10 +8,12 @@ type ControlledInputFieldProps = {
   type: 'text' | 'number' | 'email' | 'password';
   rules?: {};
   helperText?: string;
+  defaultValue?: any;
 };
 
 const ControlledInputField = (props: ControlledInputFieldProps) => {
-  const { name, rules, label, placeholder, type, helperText } = props;
+  const { name, rules, label, placeholder, type, helperText, defaultValue } =
+    props;
   const { control } = useFormContext();
 
   return (
@@ -19,6 +21,7 @@ const ControlledInputField = (props: ControlledInputFieldProps) => {
       name={name}
       control={control}
       rules={rules}
+      defaultValue={defaultValue}
       render={({ field, fieldState: { error } }) => (
         <InputField
           value={field.value}

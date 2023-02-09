@@ -16,10 +16,16 @@ const TimelineLayout = ({ children }: TimelineLayoutProps) => {
   const isMobile = useIsMobile();
   return (
     <div className={styles.container}>
-      {isMobile ? (
+      {!isMobile ? (
         <>
           <Breadcrumbs />
-          <h6>{title === 'dashboard' ? 'Home' : startCase(title)}</h6>
+          <h6>
+            {title === 'dashboard'
+              ? 'Home'
+              : title === 'editProfile'
+              ? 'Edit Profile'
+              : startCase(title)}
+          </h6>
         </>
       ) : null}
       {children}

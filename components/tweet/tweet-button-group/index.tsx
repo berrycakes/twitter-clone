@@ -20,9 +20,8 @@ const TweetButtonGroup = ({ tweetButtonProps }: TweetButtonGroupProps) => {
   const isMobile = useIsMobile();
   return (
     <div className={styles.container}>
-      {isMobile ? (
+      {!isMobile ? (
         <>
-          {' '}
           <IconButton
             type="button"
             width={40}

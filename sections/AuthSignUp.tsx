@@ -88,12 +88,20 @@ const AuthSignUp = () => {
     });
     if (!!error) {
       if (error.message.includes('profiles_username_key')) {
-        setError('username', { type: 'custom', message: 'That username has already been taken.' });
+        setError('username', {
+          type: 'custom',
+          message: 'That username has already been taken.',
+        });
+        addAlert({
+          message: 'That username has already been taken.',
+          type: 'error',
+        });
+      } else {
+        addAlert({
+          message: error.message,
+          type: 'error',
+        });
       }
-      addAlert({
-        message: error.message,
-        type: 'error',
-      });
     } else {
       addAlert({
         message: 'Account created. Confirm your email address.',
@@ -149,7 +157,12 @@ const AuthSignUp = () => {
         rules={VALIDATIONS.confirmPassword}
       />
       <ButtonContainer>
-        <Button type="submit" disabled={isSubmitting || !isValid}>
+        <Button
+          type="submit"
+          disabled={!isValid || isSubmitting}
+          loading={isSubmitting}
+          fullWidth
+        >
           Create my account
         </Button>
         <Link href={PATH.login}>Back to Home</Link>

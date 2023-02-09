@@ -1,20 +1,20 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { QueryCache, useQuery } from '@tanstack/react-query';
+import { QueryCache } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { MdExitToApp } from 'react-icons/md';
 import DashboardLayout from '../components/layouts/dashboard';
 import NavigationLayout from '../components/layouts/navigation';
 import SidebarLayout from '../components/layouts/sidebar';
 import TimelineLayout from '../components/layouts/timeline';
-import People from '../components/people';
 import Tweet from '../components/tweet';
 import Button from '../components/ui-kit/Button';
 import IconButton from '../components/ui-kit/IconButton';
-import { useGetAllTweets } from '../hooks/tweet';
+import Spinner from '../components/ui-kit/Spinner';
+import { useIsTablet } from '../hooks/mediaQuery';
 import { useGetProfiles } from '../hooks/profiles';
+import { useGetAllTweets } from '../hooks/tweet';
 import useAlertStore from '../store';
 import CreateTweet from './CreateTweet';
-import { useIsDesktop, useIsMobile, useIsTablet } from '../hooks/mediaQuery';
-import { MdExitToApp } from 'react-icons/md';
 
 const Timeline = () => {
   const supabaseClient = useSupabaseClient();
@@ -22,11 +22,8 @@ const Timeline = () => {
   const router = useRouter();
   const { addAlert } = useAlertStore();
 
-  const { data: tweets } = useGetAllTweets({});
-  const { data: profiles } = useGetProfiles();
-
-  const isMobile = useIsMobile();
-  const isDesktop = useIsDesktop();
+  const { data: tweets, isLoading: tweetsLoading } = useGetAllTweets({});
+  const { data: profiles, isLoading: profilesLoading } = useGetProfiles();
   const isTablet = useIsTablet();
 
   const handleSignOut = async () => {
@@ -50,43 +47,32 @@ const Timeline = () => {
 
   return (
     <DashboardLayout>
-      {isMobile ? (
-        <NavigationLayout user={user}>
-          {isDesktop ? (
-            <Button onClick={handleSignOut}>Sign out</Button>
-          ) : (
-            <IconButton
-              outlined={false}
-              width={30}
-              height={30}
-              icon={<MdExitToApp size={30} onClick={handleSignOut} />}
-            />
-          )}
-        </NavigationLayout>
-      ) : null}
+      <NavigationLayout user={user} condensed={!isTablet}>
+        {isTablet ? (
+          <IconButton
+            outlined={false}
+            width={30}
+            height={30}
+            icon={<MdExitToApp size={30} onClick={handleSignOut} />}
+          />
+        ) : (
+          <Button onClick={handleSignOut}>Sign out</Button>
+        )}
+      </NavigationLayout>
 
       <TimelineLayout>
         <CreateTweet />
-        {tweets?.map((tweet) => {
-          if (tweet.parent_id) return null;
-          return <Tweet key={tweet.id} tweet={tweet} />;
-        })}
+        {profilesLoading || tweetsLoading ? (
+          <Spinner type="dots" />
+        ) : (
+          tweets?.length &&
+          tweets?.map((tweet) => {
+            if (tweet.parent_id) return null;
+            return <Tweet key={tweet.id} tweet={tweet} />;
+          })
+        )}
       </TimelineLayout>
-      {isTablet ? (
-        <SidebarLayout>
-          {profiles?.map((profile) => {
-            if (!profile.display_name || !profile.username) return null;
-            if (profile.username === user?.user_metadata?.username) return null;
-            return (
-              <People
-                key={profile.id}
-                name={profile.display_name}
-                username={profile.username}
-              />
-            );
-          })}
-        </SidebarLayout>
-      ) : null}
+      {!isTablet ? <SidebarLayout /> : null}
     </DashboardLayout>
   );
 };

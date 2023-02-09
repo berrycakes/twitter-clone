@@ -3,15 +3,16 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { PATH } from '../../routes/paths';
-import TweetView from '../../sections/TweetView';
+import ProfileView from '../../sections/ProfileView';
 import styles from '../../styles/Home.module.css';
 
-const Tweet = () => {
+const Profile = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { username } = router.query;
 
-  const newId = parseInt(id as string);
-  if (typeof newId !== 'number') return null;
+  const newId = username?.toString();
+  if (typeof newId !== 'string') return null;
+
   return (
     <>
       <Head>
@@ -21,7 +22,7 @@ const Tweet = () => {
         <link rel="icon" href="/favicon.png" />
       </Head>
       <main className={styles.main}>
-        <TweetView key={newId} id={newId} />
+        <ProfileView key={newId} username={newId} />
       </main>
     </>
   );
@@ -49,4 +50,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   };
 };
 
-export default Tweet;
+export default Profile;

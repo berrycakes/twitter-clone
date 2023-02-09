@@ -1,7 +1,6 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { QueryCache } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { MdExitToApp } from 'react-icons/md';
 import DashboardLayout from '../components/layouts/dashboard';
 import NavigationLayout from '../components/layouts/navigation';
@@ -13,31 +12,30 @@ import IconButton from '../components/ui-kit/IconButton';
 import Spinner from '../components/ui-kit/Spinner';
 import Unavailable from '../components/unavailable';
 import { useIsTablet } from '../hooks/mediaQuery';
-import { useGetProfiles } from '../hooks/profiles';
-import { useGetAllTweets, useReadTweet } from '../hooks/tweet';
+import { useGetProfiles, useReadIdFromUsername } from '../hooks/profiles';
+import { useGetAllTweets, useReadProfileTweets } from '../hooks/tweet';
 import useAlertStore from '../store';
 
-const TweetView = ({ id }: { id: number }) => {
+const ProfileView = ({ username }: { username: string }) => {
   const supabaseClient = useSupabaseClient();
   const user = useUser();
   const router = useRouter();
   const { addAlert } = useAlertStore();
 
-  useGetAllTweets({});
-  const { data: profiles, isLoading } = useGetProfiles();
-  const tweet = useReadTweet(id);
+  const { data: tweets, isLoading } = useGetAllTweets({});
+  const { data: profiles } = useGetProfiles();
+  const userId = useReadIdFromUsername(decodeURI(username));
+  const profileTweets = useReadProfileTweets(userId as string);
   const isTablet = useIsTablet();
-  const [loading, setLoading] = useState(false);
 
   const handleSignOut = async () => {
-    setLoading(true);
     const { error } = await supabaseClient.auth.signOut();
+
     if (error) {
       addAlert({
         message: error.message || 'Error signing out',
         type: 'error',
       });
-      setLoading(false);
     } else {
       const queryCache = new QueryCache();
       queryCache.clear();
@@ -46,7 +44,6 @@ const TweetView = ({ id }: { id: number }) => {
         type: 'success',
       });
       router.push('/');
-      setLoading(false);
     }
   };
 
@@ -68,10 +65,12 @@ const TweetView = ({ id }: { id: number }) => {
       <TimelineLayout>
         {isLoading ? (
           <Spinner type="dots" />
-        ) : tweet ? (
-          <Tweet tweet={tweet} />
+        ) : profileTweets && profileTweets.length ? (
+          profileTweets?.map((tweet) => {
+            return <Tweet key={tweet.id} tweet={tweet} />;
+          })
         ) : (
-          <Unavailable />
+          <Unavailable message={`${username} has no tweets.`} />
         )}
       </TimelineLayout>
       {!isTablet ? <SidebarLayout /> : null}
@@ -79,4 +78,4 @@ const TweetView = ({ id }: { id: number }) => {
   );
 };
 
-export default TweetView;
+export default ProfileView;

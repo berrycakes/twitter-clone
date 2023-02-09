@@ -19,5 +19,6 @@
 }
 
 .rootPath {
+  cursor: pointer;
   color: var(--accent-purple-base) !important;
 }

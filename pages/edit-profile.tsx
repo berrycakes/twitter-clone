@@ -1,17 +1,13 @@
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useUser } from '@supabase/auth-helpers-react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { PATH } from '../../routes/paths';
-import TweetView from '../../sections/TweetView';
-import styles from '../../styles/Home.module.css';
+import { useGetProfileFromId } from '../hooks/profiles';
+import { PATH } from '../routes/paths';
+import EditProfile from '../sections/EditProfile';
+import styles from '../styles/Home.module.css';
 
-const Tweet = () => {
-  const router = useRouter();
-  const { id } = router.query;
-
-  const newId = parseInt(id as string);
-  if (typeof newId !== 'number') return null;
+const EditProfilePage = () => {
   return (
     <>
       <Head>
@@ -20,8 +16,8 @@ const Tweet = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <main className={styles.main}>
-        <TweetView key={newId} id={newId} />
+      <main className={styles.mainDashboard}>
+        <EditProfile />
       </main>
     </>
   );
@@ -49,4 +45,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   };
 };
 
-export default Tweet;
+export default EditProfilePage;

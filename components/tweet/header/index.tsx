@@ -1,15 +1,16 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
-import { MdDelete, MdEdit, MdExpandMore, MdMoreHoriz } from 'react-icons/md';
+import { MdExpandMore } from 'react-icons/md';
 import { useIsMobile } from '../../../hooks/mediaQuery';
+import { Profile } from '../../../hooks/profiles';
 import Dropdown, { DropdownItem } from '../../dropdown';
-import IconButton from '../../ui-kit/IconButton';
 import styles from './styles.module.css';
 
 type HeaderProps = {
-  name?: string;
-  displayName: string;
+  profile?: Profile;
   date?: string;
+  displayName?: string;
   isEdited?: boolean;
   createMode: boolean;
   dropdownItems?: DropdownItem[];
@@ -17,21 +18,32 @@ type HeaderProps = {
 };
 
 const Header = ({
-  name,
   date,
-  displayName,
   createMode = false,
   dropdownItems,
   dropdownIcon,
   isEdited,
+  profile,
+  displayName,
 }: HeaderProps) => {
-  const isMobile = useIsMobile();
+  const { push, query } = useRouter();
+
+  const viewProfile = () => {
+    if (!profile?.username) return null;
+    if (query.username === profile?.username) return null;
+    push({
+      pathname: '/profile/[username]',
+      query: { username: profile.username },
+    });
+  };
   return (
     <div className={styles.container}>
-      <div className={styles.imageContainer}>
+      <div className={styles.imageContainer} onClick={viewProfile}>
         <Image src="/success.png" alt="placeholder" width={40} height={40} />
       </div>
-      <div className={styles.nameContainer}>{displayName}</div>
+      <div className={styles.nameContainer} onClick={viewProfile}>
+        {displayName || profile?.display_name || 'Anonymous'}
+      </div>
       {createMode ? (
         <div className={styles.dropdownContainer}>
           <p>Everyone</p>
@@ -42,9 +54,11 @@ const Header = ({
       ) : (
         <>
           <div className={styles.dateContainer}>
-            <div className={styles.nameContainer}>{name}</div>
-            {isMobile ? <p>•</p> : null}
-            <div>{date}</div>
+            <div className={styles.usernameContainer} onClick={viewProfile}>
+              {profile?.username || 'unknownUser'}
+            </div>
+            <p>•</p>
+            <div className={styles.date}>{date}</div>
             {isEdited ? <div className={styles.edited}>edited</div> : null}
           </div>
           <div className={styles.menuContainer}>

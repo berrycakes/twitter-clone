@@ -6,18 +6,20 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   className?: string;
   padding?: string | number;
+  fullWidth?: boolean;
 }
 
 const Card = ({
   children,
   className,
   padding = '4rem 1rem',
+  fullWidth,
   ...other
 }: CardProps) => {
   return (
     <div
       style={{ padding: padding }}
-      className={clsx(styles.card, className)}
+      className={clsx(styles.card, className, fullWidth && styles.fullWidth)}
       {...other}
     >
       {children}

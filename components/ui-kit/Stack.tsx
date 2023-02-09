@@ -16,47 +16,44 @@ interface StackProps extends HTMLAttributes<HTMLDivElement> {
   fullWidth?: boolean;
 }
 
-const Stack = forwardRef(
-  (props: StackProps, ref: LegacyRef<HTMLDivElement>) => {
-    const {
-      row,
-      column,
-      divider,
-      padding,
-      margin,
-      align,
-      justify,
-      gap,
-      fullWidth = true,
-      children,
-      className,
-      ...other
-    } = props;
-    return (
-      <div
-        ref={ref}
-        style={{
-          padding: padding,
-          margin: margin,
-          alignItems: align,
-          justifyContent: justify,
-          rowGap: gap,
-          columnGap: gap,
-        }}
-        className={clsx(
-          styles.stack,
-          className,
-          row && styles.row,
-          column && styles.column,
-          divider && styles.divider,
-          fullWidth && styles.fullWidth
-        )}
-        {...other}
-      >
-        {children}
-      </div>
-    );
-  }
-);
+const Stack = (props: StackProps) => {
+  const {
+    row,
+    column,
+    divider,
+    padding,
+    margin,
+    align,
+    justify,
+    gap,
+    fullWidth = true,
+    children,
+    className,
+    ...other
+  } = props;
+  return (
+    <div
+      style={{
+        padding: padding,
+        margin: margin,
+        alignItems: align,
+        justifyContent: justify,
+        rowGap: gap,
+        columnGap: gap,
+      }}
+      className={clsx(
+        styles.stack,
+        className,
+        row && styles.row,
+        column && styles.column,
+        divider && styles.divider,
+        fullWidth && styles.fullWidth
+      )}
+      {...other}
+    >
+      {children}
+    </div>
+  );
+};
 
 export default Stack;
